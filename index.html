@@ -429,114 +429,86 @@
     #testimonials .s-label { color: rgba(255,103,0,0.9); }
     #testimonials .s-label::before { background: rgba(255,103,0,0.9); }
 
-    /* ─── STACKED TWITTER-STYLE TESTIMONIALS ─── */
-    .tstack-outer {
-      margin-top: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 80px;
-      flex-wrap: wrap;
-    }
-
-    /* Each group = one stack of 3 cards */
-    .tstack {
+    /* ─── STAGGER TESTIMONIALS ─── */
+    .stagger-wrap {
       position: relative;
-      width: 340px;
-      height: 220px;
+      width: 100%;
+      height: 560px;
+      overflow: hidden;
+      margin-top: 16px;
     }
 
-    .tcard {
+    .stagger-card {
       position: absolute;
-      top: 0; left: 0;
+      left: 50%; top: 50%;
       width: 340px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 18px;
-      padding: 22px 24px;
-      backdrop-filter: blur(14px);
       cursor: pointer;
-      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1),
+      border: 2px solid rgba(255,255,255,0.10);
+      padding: 32px 28px 72px;
+      transition: transform 0.5s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.5s,
                   border-color 0.3s,
-                  box-shadow 0.3s,
-                  filter 0.45s;
-      transform-origin: bottom center;
+                  background 0.3s;
       user-select: none;
+      /* clip-path: cut corner top-right */
+      clip-path: polygon(40px 0%, calc(100% - 40px) 0%, 100% 40px, 100% 100%, calc(100% - 40px) 100%, 40px 100%, 0 100%, 0 0);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(12px);
+    }
+    .stagger-card.is-center {
+      background: var(--orange);
+      border-color: var(--orange);
+      box-shadow: 0 8px 0 4px rgba(255,255,255,0.08);
+      z-index: 10;
+    }
+    .stagger-card.is-center .sc-text { color: #fff; }
+    .stagger-card.is-center .sc-by   { color: rgba(255,255,255,0.75); }
+
+    /* cut-corner diagonal line */
+    .stagger-card::after {
+      content: '';
+      position: absolute;
+      right: -2px; top: 38px;
+      width: 57px; height: 2px;
+      background: rgba(255,255,255,0.15);
+      transform: rotate(45deg);
+      transform-origin: right center;
+    }
+    .stagger-card.is-center::after { background: rgba(255,255,255,0.3); }
+
+    .sc-avatar {
+      width: 48px; height: 44px;
+      object-fit: cover; object-position: top;
+      margin-bottom: 18px;
+      box-shadow: 3px 3px 0 rgba(13,26,43,0.5);
+    }
+    .sc-text {
+      font-size: 15px; font-weight: 500; line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 12px;
+    }
+    .sc-by {
+      position: absolute; bottom: 28px; left: 28px; right: 28px;
+      font-size: 13px; font-style: italic;
+      color: rgba(255,255,255,0.4);
     }
 
-    /* back card */
-    .tcard:nth-child(1) {
-      transform: skewY(-8deg) translateY(0px) translateX(0px);
-      filter: grayscale(80%) brightness(0.65);
-      z-index: 1;
+    .stagger-nav {
+      position: absolute; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 20;
     }
-    /* middle card */
-    .tcard:nth-child(2) {
-      transform: skewY(-8deg) translateY(-14px) translateX(16px);
-      filter: grayscale(40%) brightness(0.8);
-      z-index: 2;
-    }
-    /* front card */
-    .tcard:nth-child(3) {
-      transform: skewY(-8deg) translateY(-28px) translateX(32px);
-      filter: grayscale(0%) brightness(1);
-      z-index: 3;
-    }
-
-    /* hover: fan them out */
-    .tstack:hover .tcard:nth-child(1) {
-      transform: skewY(-8deg) translateY(40px) translateX(-20px);
-      filter: grayscale(0%) brightness(1);
-      border-color: rgba(255,103,0,0.35);
-    }
-    .tstack:hover .tcard:nth-child(2) {
-      transform: skewY(-8deg) translateY(0px) translateX(0px);
-      filter: grayscale(0%) brightness(1);
-      border-color: rgba(255,103,0,0.2);
-    }
-    .tstack:hover .tcard:nth-child(3) {
-      transform: skewY(-8deg) translateY(-40px) translateX(20px);
-      filter: grayscale(0%) brightness(1);
-      border-color: rgba(255,103,0,0.5);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.3);
-    }
-
-    /* card internals */
-    .tc-header {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
-    }
-    .tc-avatar {
-      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--orange), #b84d00);
+    .stagger-btn {
+      width: 52px; height: 52px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 800; color: #fff;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.12);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      clip-path: none;
     }
-    .tc-meta { flex: 1; min-width: 0; }
-    .tc-name {
-      font-size: 13px; font-weight: 800; color: #fff;
-      display: flex; align-items: center; gap: 4px;
-    }
-    .tc-handle { font-size: 11px; color: rgba(255,255,255,0.38); }
-    .tc-x {
-      width: 16px; height: 16px; fill: rgba(255,255,255,0.55); flex-shrink: 0;
-    }
-    .tc-verified {
-      width: 14px; height: 14px; fill: #1d9bf0;
-    }
-    .tc-text {
-      font-size: 13px; line-height: 1.7;
-      color: rgba(255,255,255,0.78);
-      display: -webkit-box; -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical; overflow: hidden;
-      margin-bottom: 14px;
-    }
-    .tc-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 11px; color: rgba(255,255,255,0.35);
-    }
-    .tc-stats { display: flex; gap: 14px; }
-    .tc-stat { display: flex; align-items: center; gap: 4px; }
-    .tc-stat svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .stagger-btn:hover { background: var(--orange); border-color: var(--orange); }
+    .stagger-btn svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
     /* ─── CTA ─── */
     #cta {
@@ -620,9 +592,7 @@
       .why-grid { grid-template-columns: 1fr; gap: 48px; }
       .services-grid { grid-template-columns: repeat(4, 1fr); }
       .services-grid .scard { grid-column: span 2 !important; }
-      .tstack-outer { gap: 100px; }
-      .tstack { width: 280px; }
-      .tcard { width: 280px; }
+      .stagger-card { width: 280px; }
       footer { padding: 28px 40px; }
     }
     @media (max-width: 640px) {
@@ -633,9 +603,8 @@
       .hero-buttons { flex-direction: column; align-items: center; }
       .services-grid { grid-template-columns: 1fr; }
       .services-grid .scard { grid-column: 1 / -1 !important; }
-      .tstack-outer { flex-direction: column; align-items: center; gap: 180px; }
-      .tstack { width: 300px; }
-      .tcard { width: 300px; }
+      .stagger-card { width: 270px; }
+      .stagger-wrap { height: 500px; }
       .stats-row { grid-template-columns: 1fr 1fr; }
       .services-head { flex-direction: column; align-items: flex-start; }
       .cta-contacts { flex-direction: column; align-items: center; }
@@ -875,7 +844,22 @@
         <div class="s-label" style="justify-content:center;">Client Stories</div>
         <h2 class="s-title">What Our <em>Clients</em> Say</h2>
       </div>
+    </div>
 
+    <div class="stagger-wrap reveal" id="staggerWrap">
+      <!-- cards injected by JS -->
+      <div class="stagger-nav">
+        <button class="stagger-btn" id="staggerPrev" aria-label="Previous">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="stagger-btn" id="staggerNext" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div style="display:none">
+      <!-- old stacks removed -->
       <div class="tstack-outer reveal">
 
         <!-- STACK 1: Loft Film + Tilburg + Landeseiten -->
@@ -1002,6 +986,7 @@
 
       </div>
     </div>
+    </div>
   </section>
 
   <!-- CTA — windmill golden hour as atmospheric bg -->
@@ -1103,7 +1088,92 @@
       if (v && scrollY < innerHeight) v.style.transform = `translateY(${scrollY * 0.28}px)`;
     }, { passive: true });
 
-    // testimonials loop is pure CSS — no JS needed
+    // ─── STAGGER TESTIMONIALS ───
+    (function() {
+      const TESTIMONIALS = [
+        {
+          text: "We've worked with Joel on several translation projects into Dutch — always smooth and professional. Fast, reliable, excellent quality. Highly recommended.",
+          by: "— Loft Film GmbH, Film Production",
+          img: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=96&h=112&fit=crop&crop=top"
+        },
+        {
+          text: "It's nice working with Bert. He's fast to respond, very flexible, and his translations have an authentic ring. Great solutions for phrases not easily translatable.",
+          by: "— Tilburg University Language Center",
+          img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=96&h=112&fit=crop&crop=top"
+        },
+        {
+          text: "Working with Joel these past years has been a great experience. Super reliable, easy to communicate with. Our Dutch landing pages feel completely natural to the local audience.",
+          by: "— Landeseiten.de, Digital Agency",
+          img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=96&h=112&fit=crop&crop=top"
+        },
+        {
+          text: "At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure — always of the highest standard. Highly recommended by our entire team.",
+          by: "— Taalcentrum, Language Services",
+          img: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=96&h=112&fit=crop&crop=top"
+        }
+      ];
+
+      const wrap = document.getElementById('staggerWrap');
+      let list = [...TESTIMONIALS];
+      let cardW = window.innerWidth >= 640 ? 340 : 270;
+
+      function getCardW() { return window.innerWidth >= 640 ? 340 : 270; }
+
+      function render() {
+        // remove old cards
+        wrap.querySelectorAll('.stagger-card').forEach(c => c.remove());
+        cardW = getCardW();
+        const n = list.length;
+        const mid = Math.floor(n / 2);
+
+        list.forEach((t, i) => {
+          const pos = i - mid; // negative=left, 0=center, positive=right
+          const isCenter = pos === 0;
+
+          const card = document.createElement('div');
+          card.className = 'stagger-card' + (isCenter ? ' is-center' : '');
+
+          // position: centered by 50%/50%, then offset by pos
+          const tx = (cardW / 1.5) * pos;
+          const ty = isCenter ? -65 : (pos % 2 ? 15 : -15);
+          const rot = isCenter ? 0 : (pos % 2 ? 2.5 : -2.5);
+
+          card.style.cssText = `
+            width:${cardW}px;
+            transform: translate(-50%,-50%) translateX(${tx}px) translateY(${ty}px) rotate(${rot}deg);
+            ${isCenter ? 'box-shadow:0 8px 0 4px rgba(255,255,255,0.08);' : ''}
+          `;
+
+          card.innerHTML = `
+            <img class="sc-avatar" src="${t.img}" alt="client" />
+            <p class="sc-text">"${t.text}"</p>
+            <p class="sc-by">${t.by}</p>
+          `;
+
+          card.addEventListener('click', () => move(pos));
+          wrap.insertBefore(card, document.getElementById('staggerPrev').parentElement);
+          wrap.insertBefore(card, wrap.querySelector('.stagger-nav'));
+        });
+      }
+
+      function move(steps) {
+        if (steps === 0) return;
+        const newList = [...list];
+        if (steps > 0) {
+          for (let i = 0; i < steps; i++) { newList.push(newList.shift()); }
+        } else {
+          for (let i = 0; i < -steps; i++) { newList.unshift(newList.pop()); }
+        }
+        list = newList;
+        render();
+      }
+
+      document.getElementById('staggerPrev').addEventListener('click', (e) => { e.stopPropagation(); move(-1); });
+      document.getElementById('staggerNext').addEventListener('click', (e) => { e.stopPropagation(); move(1); });
+
+      window.addEventListener('resize', render);
+      render();
+    })();
 
     // ─── CARD 3D TILT ───
     document.querySelectorAll('.scard').forEach(card => {
