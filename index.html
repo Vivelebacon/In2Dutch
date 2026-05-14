@@ -361,7 +361,15 @@
       max-width: 320px; line-height: 1.7;
     }
 
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    /* 5-card grid: 3 top row, 2 bottom row centered */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 18px;
+    }
+    .services-grid .scard { grid-column: span 2; }
+    .services-grid .scard:nth-child(4) { grid-column: 2 / span 2; }
+    .services-grid .scard:nth-child(5) { grid-column: 4 / span 2; }
 
     .scard {
       background: var(--white); border: 1px solid var(--border);
@@ -421,70 +429,63 @@
     #testimonials .s-label { color: rgba(255,103,0,0.9); }
     #testimonials .s-label::before { background: rgba(255,103,0,0.9); }
 
-    /* ─── CAROUSEL ─── */
-    .carousel-wrap { margin-top: 48px; position: relative; }
-    .carousel-track-outer { overflow: hidden; }
-    .carousel-track {
-      display: flex; gap: 24px;
-      transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
-      will-change: transform;
-      cursor: grab;
-      user-select: none;
+    /* ─── TESTIMONIALS INFINITE LOOP ─── */
+    .tloop-wrap {
+      margin-top: 52px;
+      overflow: hidden;
+      position: relative;
     }
-    .carousel-track:active { cursor: grabbing; }
+    /* fade edges */
+    .tloop-wrap::before, .tloop-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 120px;
+      z-index: 2; pointer-events: none;
+    }
+    .tloop-wrap::before { left: 0; background: linear-gradient(to right, rgba(13,26,43,1), transparent); }
+    .tloop-wrap::after  { right: 0; background: linear-gradient(to left, rgba(13,26,43,1), transparent); }
+
+    .tloop-track {
+      display: flex; gap: 24px;
+      width: max-content;
+      animation: tloop 40s linear infinite;
+    }
+    .tloop-wrap:hover .tloop-track { animation-play-state: paused; }
+
+    @keyframes tloop {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
     .tcard {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.09);
       border-radius: var(--radius-lg); padding: 36px 32px;
       position: relative; overflow: hidden;
       backdrop-filter: blur(10px);
-      flex: 0 0 calc(50% - 12px);
-      min-width: 0;
-      transition: border-color 0.28s;
+      width: 380px; flex-shrink: 0;
+      transition: border-color 0.28s, transform 0.28s cubic-bezier(0.22,1,0.36,1);
     }
+    .tcard:hover { border-color: rgba(255,103,0,0.4); transform: translateY(-4px); }
     .tcard-quote {
-      font-size: 90px; font-weight: 900;
-      color: rgba(255,103,0,0.09);
-      position: absolute; top: -8px; left: 16px;
-      line-height: 1; pointer-events: none;
+      font-size: 72px; font-weight: 900;
+      color: rgba(255,103,0,0.12);
+      position: absolute; top: -4px; left: 16px;
+      line-height: 1; pointer-events: none; font-family: Georgia, serif;
     }
     .tcard-client {
-      font-size: 20px; font-weight: 800;
-      color: var(--orange); margin-bottom: 16px; line-height: 1.25;
+      font-size: 17px; font-weight: 800;
+      color: var(--orange); margin-bottom: 14px; line-height: 1.25;
+      padding-top: 24px;
     }
-    .tcard-text { font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.72); margin-bottom: 24px; }
+    .tcard-text { font-size: 13.5px; line-height: 1.8; color: rgba(255,255,255,0.7); margin-bottom: 24px; }
     .tcard-author { display: flex; align-items: center; gap: 12px; }
     .tcard-avatar {
-      width: 42px; height: 42px; border-radius: 50%;
+      width: 38px; height: 38px; border-radius: 50%;
       background: linear-gradient(135deg, var(--orange), #b84d00);
       display: flex; align-items: center; justify-content: center;
-      font-size: 17px; font-weight: 800; color: #fff; flex-shrink: 0;
+      font-size: 15px; font-weight: 800; color: #fff; flex-shrink: 0;
     }
-    .tcard-name { font-size: 14px; font-weight: 700; color: #fff; }
-    .tcard-role { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
-
-    /* nav dots + arrows */
-    .carousel-controls {
-      display: flex; align-items: center; justify-content: center;
-      gap: 20px; margin-top: 36px;
-    }
-    .carousel-arrow {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.14);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background 0.2s, border-color 0.2s;
-      flex-shrink: 0;
-    }
-    .carousel-arrow:hover { background: rgba(255,103,0,0.18); border-color: rgba(255,103,0,0.5); }
-    .carousel-arrow svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .carousel-dots { display: flex; gap: 8px; }
-    .carousel-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-      cursor: pointer; transition: background 0.25s, transform 0.25s;
-    }
-    .carousel-dot.active { background: var(--orange); transform: scale(1.4); }
+    .tcard-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .tcard-role { font-size: 11px; color: rgba(255,255,255,0.38); margin-top: 2px; }
 
     /* ─── CTA ─── */
     #cta {
@@ -566,7 +567,8 @@
       .nav-links { display: none; }
       .sw { padding: 72px 40px; }
       .why-grid { grid-template-columns: 1fr; gap: 48px; }
-      .services-grid { grid-template-columns: 1fr 1fr; }
+      .services-grid { grid-template-columns: repeat(4, 1fr); }
+      .services-grid .scard { grid-column: span 2 !important; }
       .tcard { flex: 0 0 calc(100% - 0px); }
       footer { padding: 28px 40px; }
     }
@@ -577,6 +579,7 @@
       .hero-desc { font-size: 14px; }
       .hero-buttons { flex-direction: column; align-items: center; }
       .services-grid { grid-template-columns: 1fr; }
+      .services-grid .scard { grid-column: 1 / -1 !important; }
       .tcard { flex: 0 0 100%; }
       .stats-row { grid-template-columns: 1fr 1fr; }
       .services-head { flex-direction: column; align-items: flex-start; }
@@ -745,127 +748,165 @@
         <p class="services-note">Dutch is what we do best. Every service is built around delivering translations that actually work for your brand and your audience.</p>
       </div>
       <div class="services-grid">
+
+        <!-- 01 E-Learning & Training -->
         <div class="scard reveal" style="transition-delay:0s">
           <div class="scard-shine"></div>
           <div class="scard-num">01</div>
           <div class="scard-ic">
-            <svg viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
           </div>
-          <div class="scard-title">Smooth, Natural Translations</div>
-          <div class="scard-desc">We take your content and make it flow perfectly in Dutch — no awkward phrasing, no weird wording. Just smooth, natural translations that hit the mark every time.</div>
-          <a href="#cta" class="scard-link">
-            Learn more
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <div class="scard-title">E-Learning &amp; Training</div>
+          <div class="scard-desc">Course materials, LMS content, instructional guides, and training modules — translated so your Dutch learners get the same engaging experience as the original.</div>
+          <a href="#cta" class="scard-link">Learn more <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
-        <div class="scard reveal" style="transition-delay:0.1s">
+
+        <!-- 02 Legal Docs & Tech -->
+        <div class="scard reveal" style="transition-delay:0.08s">
           <div class="scard-shine"></div>
           <div class="scard-num">02</div>
           <div class="scard-ic">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           </div>
-          <div class="scard-title">Dutch Is Our Main Focus</div>
-          <div class="scard-desc">Dutch is our specialty. We know exactly how to make your content resonate with Dutch speakers while keeping your brand's voice completely intact.</div>
-          <a href="#cta" class="scard-link">
-            Learn more
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <div class="scard-title">Legal Docs &amp; Tech</div>
+          <div class="scard-desc">Contracts, terms &amp; conditions, patents, technical manuals — precise, terminology-accurate translations where every word carries legal or technical weight.</div>
+          <a href="#cta" class="scard-link">Learn more <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
-        <div class="scard reveal" style="transition-delay:0.2s">
+
+        <!-- 03 Audiovisual & Multimedia -->
+        <div class="scard reveal" style="transition-delay:0.16s">
           <div class="scard-shine"></div>
           <div class="scard-num">03</div>
           <div class="scard-ic">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
           </div>
-          <div class="scard-title">Need Another Language?</div>
-          <div class="scard-desc">No worries. While Dutch is our specialty, we can hook you up with trusted linguists for other languages too. Just ask — we'll make it happen.</div>
-          <a href="#cta" class="scard-link">
-            Learn more
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <div class="scard-title">Audiovisual &amp; Multimedia</div>
+          <div class="scard-desc">Subtitles, voice-over scripts, video localization, and multimedia content — adapted for Dutch audiences while preserving timing, tone, and cultural nuance.</div>
+          <a href="#cta" class="scard-link">Learn more <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
+
+        <!-- 04 Marketing & Websites -->
+        <div class="scard reveal" style="transition-delay:0.24s">
+          <div class="scard-shine"></div>
+          <div class="scard-num">04</div>
+          <div class="scard-ic">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
+          <div class="scard-title">Marketing &amp; Websites</div>
+          <div class="scard-desc">Ad copy, landing pages, social content, email campaigns — localized Dutch that resonates with your audience and actually converts, not just word-for-word.</div>
+          <a href="#cta" class="scard-link">Learn more <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+
+        <!-- 05 Business & Corporate Content -->
+        <div class="scard reveal" style="transition-delay:0.32s">
+          <div class="scard-shine"></div>
+          <div class="scard-num">05</div>
+          <div class="scard-ic">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          </div>
+          <div class="scard-title">Business &amp; Corporate Content</div>
+          <div class="scard-desc">Annual reports, internal communications, presentations, HR documents — professional Dutch that reflects your brand's voice with the formality the context demands.</div>
+          <a href="#cta" class="scard-link">Learn more <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+
       </div>
     </div>
   </section>
 
   <!-- TESTIMONIALS — Amsterdam canal as atmospheric bg -->
   <section id="testimonials">
-    <div class="sw">
+    <div class="sw" style="padding-bottom: 0;">
       <div class="reveal">
         <div class="s-label">Client Stories</div>
         <h2 class="s-title">What Our <em>Clients</em> Say</h2>
       </div>
-      <div class="carousel-wrap reveal">
-        <div class="carousel-track-outer">
-          <div class="carousel-track" id="testiTrack">
+    </div>
+    <!-- full-bleed loop outside .sw padding -->
+    <div class="tloop-wrap reveal" style="margin-top:52px; padding-bottom: 80px;">
+      <div class="tloop-track" id="testiTrack">
 
-            <!-- 1: Loft Film GmbH -->
-            <div class="tcard">
-              <div class="tcard-quote">"</div>
-              <div class="tcard-client">Loft Film GmbH</div>
-              <p class="tcard-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality — exactly what you want when dealing with multilingual content. Highly recommended.</p>
-              <div class="tcard-author">
-                <div class="tcard-avatar">L</div>
-                <div>
-                  <div class="tcard-name">Loft Film GmbH</div>
-                  <div class="tcard-role">Film Production</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2: Tilburg University Language Center -->
-            <div class="tcard">
-              <div class="tcard-quote">"</div>
-              <div class="tcard-client">Tilburg University Language Center</div>
-              <p class="tcard-text">It's nice working with Bert. He's fast to respond and very flexible in taking on assignments. His translations have an authentic ring to it and he comes up with good solutions to phrases that are not quite easily translatable from one language into the other.</p>
-              <div class="tcard-author">
-                <div class="tcard-avatar">T</div>
-                <div>
-                  <div class="tcard-name">Tilburg University Language Center</div>
-                  <div class="tcard-role">Academic Institution</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3: Landeseiten.de -->
-            <div class="tcard">
-              <div class="tcard-quote">"</div>
-              <div class="tcard-client">Landeseiten.de</div>
-              <p class="tcard-text">Working with Joel on our Dutch translations these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. From the first message to the final files, everything runs smoothly and professionally. He really pays attention to the details, and it shows. Our Dutch landing pages are clear, accurate, and feel natural to the local audience. I wouldn't hesitate to recommend Joel to anyone looking for a solid, professional translator who's also just really nice to work with.</p>
-              <div class="tcard-author">
-                <div class="tcard-avatar">L</div>
-                <div>
-                  <div class="tcard-name">Landeseiten.de</div>
-                  <div class="tcard-role">Digital Agency</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 4: Taalcentrum (partial visible in screenshot) -->
-            <div class="tcard">
-              <div class="tcard-quote">"</div>
-              <div class="tcard-client">Taalcentrum</div>
-              <p class="tcard-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure. His services across the board are always of the highest standard — we're happy to continue working together and would entrust Bert with any translation assignment. Highly recommended by all of them.</p>
-              <div class="tcard-author">
-                <div class="tcard-avatar">T</div>
-                <div>
-                  <div class="tcard-name">Taalcentrum</div>
-                  <div class="tcard-role">Language Services</div>
-                </div>
-              </div>
-            </div>
-
+        <!-- SET A -->
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Loft Film GmbH</div>
+          <p class="tcard-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality — exactly what you want when dealing with multilingual content. Highly recommended.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">L</div>
+            <div><div class="tcard-name">Loft Film GmbH</div><div class="tcard-role">Film Production</div></div>
           </div>
         </div>
-        <div class="carousel-controls">
-          <button class="carousel-arrow" id="testiPrev" aria-label="Previous">
-            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <div class="carousel-dots" id="testiDots"></div>
-          <button class="carousel-arrow" id="testiNext" aria-label="Next">
-            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
+
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Tilburg University Language Center</div>
+          <p class="tcard-text">It's nice working with Bert. He's fast to respond and very flexible in taking on assignments. His translations have an authentic ring to it and he comes up with good solutions to phrases that are not quite easily translatable from one language into the other.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">T</div>
+            <div><div class="tcard-name">Tilburg University Language Center</div><div class="tcard-role">Academic Institution</div></div>
+          </div>
         </div>
+
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Landeseiten.de</div>
+          <p class="tcard-text">Working with Joel on our Dutch translations these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. From the first message to the final files, everything runs smoothly and professionally. He really pays attention to the details, and it shows.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">L</div>
+            <div><div class="tcard-name">Landeseiten.de</div><div class="tcard-role">Digital Agency</div></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Taalcentrum</div>
+          <p class="tcard-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure. His services across the board are always of the highest standard — we're happy to continue working together and would entrust Bert with any translation assignment.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">T</div>
+            <div><div class="tcard-name">Taalcentrum</div><div class="tcard-role">Language Services</div></div>
+          </div>
+        </div>
+
+        <!-- SET B — exact duplicate for seamless loop -->
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Loft Film GmbH</div>
+          <p class="tcard-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality — exactly what you want when dealing with multilingual content. Highly recommended.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">L</div>
+            <div><div class="tcard-name">Loft Film GmbH</div><div class="tcard-role">Film Production</div></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Tilburg University Language Center</div>
+          <p class="tcard-text">It's nice working with Bert. He's fast to respond and very flexible in taking on assignments. His translations have an authentic ring to it and he comes up with good solutions to phrases that are not quite easily translatable from one language into the other.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">T</div>
+            <div><div class="tcard-name">Tilburg University Language Center</div><div class="tcard-role">Academic Institution</div></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Landeseiten.de</div>
+          <p class="tcard-text">Working with Joel on our Dutch translations these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. From the first message to the final files, everything runs smoothly and professionally. He really pays attention to the details, and it shows.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">L</div>
+            <div><div class="tcard-name">Landeseiten.de</div><div class="tcard-role">Digital Agency</div></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard-quote">"</div>
+          <div class="tcard-client">Taalcentrum</div>
+          <p class="tcard-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure. His services across the board are always of the highest standard — we're happy to continue working together and would entrust Bert with any translation assignment.</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">T</div>
+            <div><div class="tcard-name">Taalcentrum</div><div class="tcard-role">Language Services</div></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -969,94 +1010,7 @@
       if (v && scrollY < innerHeight) v.style.transform = `translateY(${scrollY * 0.28}px)`;
     }, { passive: true });
 
-    // ─── TESTIMONIALS CAROUSEL ───
-    (function() {
-      const track = document.getElementById('testiTrack');
-      const dotsWrap = document.getElementById('testiDots');
-      const cards = track ? Array.from(track.children) : [];
-      if (!cards.length) return;
-
-      const perView = () => window.innerWidth <= 768 ? 1 : 2;
-      let current = 0;
-      let total = () => Math.ceil(cards.length / perView());
-
-      function buildDots() {
-        dotsWrap.innerHTML = '';
-        for (let i = 0; i < total(); i++) {
-          const d = document.createElement('button');
-          d.className = 'carousel-dot' + (i === current ? ' active' : '');
-          d.setAttribute('aria-label', 'Slide ' + (i + 1));
-          d.addEventListener('click', () => goTo(i));
-          dotsWrap.appendChild(d);
-        }
-      }
-
-      function updateDots() {
-        dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => {
-          d.classList.toggle('active', i === current);
-        });
-      }
-
-      function getSlideWidth() {
-        const card = cards[0];
-        const gap = 24;
-        const pv = perView();
-        const outer = track.parentElement;
-        return (outer.offsetWidth - gap * (pv - 1)) / pv + gap;
-      }
-
-      function goTo(index) {
-        const t = total();
-        current = Math.max(0, Math.min(index, t - 1));
-        track.style.transform = `translateX(-${current * getSlideWidth() * perView()}px)`;
-        updateDots();
-      }
-
-      document.getElementById('testiPrev').addEventListener('click', () => goTo(current - 1));
-      document.getElementById('testiNext').addEventListener('click', () => goTo(current + 1));
-
-      // touch swipe
-      let startX = 0;
-      track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-      track.addEventListener('touchend', e => {
-        const dx = startX - e.changedTouches[0].clientX;
-        if (Math.abs(dx) > 40) goTo(current + (dx > 0 ? 1 : -1));
-      }, { passive: true });
-
-      // mouse drag
-      let isDragging = false, dragStartX = 0, dragDelta = 0;
-      track.addEventListener('mousedown', e => {
-        isDragging = true; dragStartX = e.clientX; dragDelta = 0;
-        track.style.cursor = 'grabbing';
-        track.style.transition = 'none';
-      });
-      window.addEventListener('mousemove', e => {
-        if (!isDragging) return;
-        dragDelta = dragStartX - e.clientX;
-      });
-      window.addEventListener('mouseup', () => {
-        if (!isDragging) return;
-        isDragging = false;
-        track.style.cursor = '';
-        track.style.transition = 'transform 0.55s cubic-bezier(0.22,1,0.36,1)';
-        if (Math.abs(dragDelta) > 50) goTo(current + (dragDelta > 0 ? 1 : -1));
-        else goTo(current);
-      });
-      track.addEventListener('dragstart', e => e.preventDefault());
-
-      // auto-advance
-      let timer = setInterval(() => goTo((current + 1) % total()), 5000);
-      track.parentElement.addEventListener('mouseenter', () => clearInterval(timer));
-      track.parentElement.addEventListener('mouseleave', () => {
-        clearInterval(timer);
-        timer = setInterval(() => goTo((current + 1) % total()), 5000);
-      });
-
-      window.addEventListener('resize', () => { buildDots(); goTo(Math.min(current, total() - 1)); });
-
-      buildDots();
-      goTo(0);
-    })();
+    // testimonials loop is pure CSS — no JS needed
 
     // ─── CARD 3D TILT ───
     document.querySelectorAll('.scard').forEach(card => {
