@@ -429,86 +429,107 @@
     #testimonials .s-label { color: rgba(255,103,0,0.9); }
     #testimonials .s-label::before { background: rgba(255,103,0,0.9); }
 
-    /* ─── STAGGER TESTIMONIALS ─── */
-    .stagger-wrap {
+    /* ─── TESTIMONIALS CAROUSEL ─── */
+    .tc-outer {
+      margin-top: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .tc-track-wrap {
       position: relative;
       width: 100%;
-      height: 560px;
       overflow: hidden;
-      margin-top: 16px;
+    }
+    /* fade left/right edges */
+    .tc-track-wrap::before,
+    .tc-track-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 160px;
+      z-index: 2; pointer-events: none;
+    }
+    .tc-track-wrap::before { left: 0;  background: linear-gradient(to right, rgba(13,26,43,1) 0%, transparent 100%); }
+    .tc-track-wrap::after  { right: 0; background: linear-gradient(to left,  rgba(13,26,43,1) 0%, transparent 100%); }
+
+    .tc-track {
+      display: flex;
+      gap: 24px;
+      transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
+      will-change: transform;
+      padding: 24px 0 32px;
     }
 
-    .stagger-card {
-      position: absolute;
-      left: 50%; top: 50%;
-      width: 340px;
-      cursor: pointer;
-      border: 2px solid rgba(255,255,255,0.10);
-      padding: 32px 28px 72px;
-      transition: transform 0.5s cubic-bezier(0.22,1,0.36,1),
-                  box-shadow 0.5s,
-                  border-color 0.3s,
-                  background 0.3s;
-      user-select: none;
-      /* clip-path: cut corner top-right */
-      clip-path: polygon(40px 0%, calc(100% - 40px) 0%, 100% 40px, 100% 100%, calc(100% - 40px) 100%, 40px 100%, 0 100%, 0 0);
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(12px);
-    }
-    .stagger-card.is-center {
-      background: var(--orange);
-      border-color: var(--orange);
-      box-shadow: 0 8px 0 4px rgba(255,255,255,0.08);
-      z-index: 10;
-    }
-    .stagger-card.is-center .sc-text { color: #fff; }
-    .stagger-card.is-center .sc-by   { color: rgba(255,255,255,0.75); }
-
-    /* cut-corner diagonal line */
-    .stagger-card::after {
-      content: '';
-      position: absolute;
-      right: -2px; top: 38px;
-      width: 57px; height: 2px;
-      background: rgba(255,255,255,0.15);
-      transform: rotate(45deg);
-      transform-origin: right center;
-    }
-    .stagger-card.is-center::after { background: rgba(255,255,255,0.3); }
-
-    .sc-avatar {
-      width: 48px; height: 44px;
-      object-fit: cover; object-position: top;
-      margin-bottom: 18px;
-      box-shadow: 3px 3px 0 rgba(13,26,43,0.5);
-    }
-    .sc-text {
-      font-size: 15px; font-weight: 500; line-height: 1.6;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 12px;
-    }
-    .sc-by {
-      position: absolute; bottom: 28px; left: 28px; right: 28px;
-      font-size: 13px; font-style: italic;
-      color: rgba(255,255,255,0.4);
-    }
-
-    .stagger-nav {
-      position: absolute; bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 8px; z-index: 20;
-    }
-    .stagger-btn {
-      width: 52px; height: 52px;
-      display: flex; align-items: center; justify-content: center;
+    .tc-card {
+      flex: 0 0 420px;
       background: rgba(255,255,255,0.05);
-      border: 2px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px;
+      padding: 36px 32px 32px;
+      position: relative;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s, box-shadow 0.35s, transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s;
+      opacity: 0.45;
+      transform: scale(0.93);
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      clip-path: none;
     }
-    .stagger-btn:hover { background: var(--orange); border-color: var(--orange); }
-    .stagger-btn svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .tc-card.tc-active {
+      border-color: rgba(255,103,0,0.5);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      opacity: 1;
+      transform: scale(1);
+    }
+    .tc-card.tc-side {
+      opacity: 0.6;
+      transform: scale(0.96);
+    }
+
+    .tc-bigquote {
+      font-size: 64px; font-weight: 900; line-height: 1;
+      color: rgba(255,103,0,0.18);
+      font-family: Georgia, serif;
+      position: absolute; top: 10px; left: 22px;
+      pointer-events: none;
+    }
+    .tc-company {
+      font-size: 15px; font-weight: 800;
+      color: var(--orange);
+      margin-bottom: 16px;
+      padding-top: 20px;
+    }
+    .tc-text {
+      font-size: 14px; line-height: 1.8;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 24px;
+    }
+    .tc-role {
+      font-size: 12px; font-style: italic;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* nav */
+    .tc-controls {
+      display: flex; align-items: center; gap: 20px;
+    }
+    .tc-arrow {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.13);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .tc-arrow:hover { background: var(--orange); border-color: var(--orange); transform: scale(1.08); }
+    .tc-arrow svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .tc-dots { display: flex; gap: 8px; }
+    .tc-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+      border: none;
+    }
+    .tc-dot.active { background: var(--orange); transform: scale(1.45); }
 
     /* ─── CTA ─── */
     #cta {
@@ -592,7 +613,8 @@
       .why-grid { grid-template-columns: 1fr; gap: 48px; }
       .services-grid { grid-template-columns: repeat(4, 1fr); }
       .services-grid .scard { grid-column: span 2 !important; }
-      .stagger-card { width: 280px; }
+      .tc-card { flex: 0 0 340px; }
+      .tc-track-wrap::before, .tc-track-wrap::after { width: 80px; }
       footer { padding: 28px 40px; }
     }
     @media (max-width: 640px) {
@@ -603,8 +625,8 @@
       .hero-buttons { flex-direction: column; align-items: center; }
       .services-grid { grid-template-columns: 1fr; }
       .services-grid .scard { grid-column: 1 / -1 !important; }
-      .stagger-card { width: 270px; }
-      .stagger-wrap { height: 500px; }
+      .tc-card { flex: 0 0 290px; padding: 28px 22px 24px; }
+      .tc-track-wrap::before, .tc-track-wrap::after { width: 40px; }
       .stats-row { grid-template-columns: 1fr 1fr; }
       .services-head { flex-direction: column; align-items: flex-start; }
       .cta-contacts { flex-direction: column; align-items: center; }
@@ -844,148 +866,45 @@
         <div class="s-label" style="justify-content:center;">Client Stories</div>
         <h2 class="s-title">What Our <em>Clients</em> Say</h2>
       </div>
-    </div>
-
-    <div class="stagger-wrap reveal" id="staggerWrap">
-      <!-- cards injected by JS -->
-      <div class="stagger-nav">
-        <button class="stagger-btn" id="staggerPrev" aria-label="Previous">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="stagger-btn" id="staggerNext" aria-label="Next">
-          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <div style="display:none">
-      <!-- old stacks removed -->
-      <div class="tstack-outer reveal">
-
-        <!-- STACK 1: Loft Film + Tilburg + Landeseiten -->
-        <div class="tstack">
-          <!-- back -->
-          <div class="tcard">
-            <div class="tc-header">
-              <div class="tc-avatar">L</div>
-              <div class="tc-meta">
-                <div class="tc-name">Loft Film GmbH <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
-                <div class="tc-handle">@loftfilmgmbh</div>
-              </div>
-              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      <div class="tc-outer reveal">
+        <div class="tc-track-wrap">
+          <div class="tc-track" id="tcTrack">
+            <div class="tc-card">
+              <div class="tc-bigquote">"</div>
+              <div class="tc-company">Loft Film GmbH</div>
+              <p class="tc-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality exactly what you want when dealing with multilingual content. Highly recommended.</p>
+              <p class="tc-role">Film Production</p>
             </div>
-            <p class="tc-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality.</p>
-            <div class="tc-footer">
-              <span>Film Production</span>
-              <div class="tc-stats">
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 64</div>
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 12</div>
-              </div>
+            <div class="tc-card">
+              <div class="tc-bigquote">"</div>
+              <div class="tc-company">Tilburg University Language Center</div>
+              <p class="tc-text">It's nice working with Bert. He's fast to respond and very flexible in taking on assignments. His translations have an authentic ring to it and he comes up with good solutions to phrases that are not quite easily translatable from one language into the other.</p>
+              <p class="tc-role">Academic Institution</p>
             </div>
-          </div>
-          <!-- middle -->
-          <div class="tcard">
-            <div class="tc-header">
-              <div class="tc-avatar">T</div>
-              <div class="tc-meta">
-                <div class="tc-name">Tilburg University <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
-                <div class="tc-handle">@tilburguniversity</div>
-              </div>
-              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <div class="tc-card">
+              <div class="tc-bigquote">"</div>
+              <div class="tc-company">Landeseiten.de</div>
+              <p class="tc-text">Working with Joel on our Dutch translations these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. From the first message to the final files, everything runs smoothly and professionally. He really pays attention to the details, and it shows. Our Dutch landing pages are clear, accurate, and feel natural to the local audience. I wouldn't hesitate to recommend Joel to anyone looking for a solid, professional translator who's also just really nice to work with.</p>
+              <p class="tc-role">Digital Agency</p>
             </div>
-            <p class="tc-text">It's nice working with Bert. He's fast to respond and very flexible. His translations have an authentic ring and he comes up with great solutions for phrases that are not easily translatable.</p>
-            <div class="tc-footer">
-              <span>Language Center</span>
-              <div class="tc-stats">
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 91</div>
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 17</div>
-              </div>
-            </div>
-          </div>
-          <!-- front -->
-          <div class="tcard">
-            <div class="tc-header">
-              <div class="tc-avatar">L</div>
-              <div class="tc-meta">
-                <div class="tc-name">Landeseiten.de <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
-                <div class="tc-handle">@landeseiten</div>
-              </div>
-              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </div>
-            <p class="tc-text">Working with Joel these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. Our Dutch landing pages feel natural to the local audience.</p>
-            <div class="tc-footer">
-              <span>Digital Agency</span>
-              <div class="tc-stats">
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 138</div>
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 29</div>
-              </div>
+            <div class="tc-card">
+              <div class="tc-bigquote">"</div>
+              <div class="tc-company">Taalcentrum</div>
+              <p class="tc-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and a eye for detail, even under time pressure. His services across the board have been a pleasure to work with and we'd be happy to continue and recommend his translation and localization services to all of them.</p>
+              <p class="tc-role">Language Services</p>
             </div>
           </div>
         </div>
-
-        <!-- STACK 2: Taalcentrum + two more slots cycling the same clients -->
-        <div class="tstack">
-          <!-- back -->
-          <div class="tcard">
-            <div class="tc-header">
-              <div class="tc-avatar" style="background:linear-gradient(135deg,#1d9bf0,#0e5a8a)">T</div>
-              <div class="tc-meta">
-                <div class="tc-name">Taalcentrum <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
-                <div class="tc-handle">@taalcentrum</div>
-              </div>
-              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </div>
-            <p class="tc-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure — always of the highest standard.</p>
-            <div class="tc-footer">
-              <span>Language Services</span>
-              <div class="tc-stats">
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 203</div>
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 41</div>
-              </div>
-            </div>
-          </div>
-          <!-- middle -->
-          <div class="tcard">
-            <div class="tc-header">
-              <div class="tc-avatar">L</div>
-              <div class="tc-meta">
-                <div class="tc-name">Loft Film GmbH <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
-                <div class="tc-handle">@loftfilmgmbh</div>
-              </div>
-              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </div>
-            <p class="tc-text">He's fast, reliable, and delivers work of excellent quality — exactly what you want when dealing with multilingual content. Highly recommended.</p>
-            <div class="tc-footer">
-              <span>Film Production</span>
-              <div class="tc-stats">
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 55</div>
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 9</div>
-              </div>
-            </div>
-          </div>
-          <!-- front -->
-          <div class="tcard">
-            <div class="tc-header">
-              <div class="tc-avatar" style="background:linear-gradient(135deg,#1d9bf0,#0e5a8a)">T</div>
-              <div class="tc-meta">
-                <div class="tc-name">Taalcentrum <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
-                <div class="tc-handle">@taalcentrum</div>
-              </div>
-              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </div>
-            <p class="tc-text">We're happy to continue working together and would entrust Bert with any translation assignment. Highly recommended by all of our team.</p>
-            <div class="tc-footer">
-              <span>Language Services · Since 2022</span>
-              <div class="tc-stats">
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 178</div>
-                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 34</div>
-              </div>
-            </div>
-          </div>
+        <div class="tc-controls">
+          <button class="tc-arrow" id="tcPrev" aria-label="Previous">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="tc-dots" id="tcDots"></div>
+          <button class="tc-arrow" id="tcNext" aria-label="Next">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
-
       </div>
-    </div>
     </div>
   </section>
 
@@ -1088,91 +1007,108 @@
       if (v && scrollY < innerHeight) v.style.transform = `translateY(${scrollY * 0.28}px)`;
     }, { passive: true });
 
-    // ─── STAGGER TESTIMONIALS ───
+    // ─── TESTIMONIALS CAROUSEL ───
     (function() {
-      const TESTIMONIALS = [
-        {
-          text: "We've worked with Joel on several translation projects into Dutch — always smooth and professional. Fast, reliable, excellent quality. Highly recommended.",
-          by: "— Loft Film GmbH, Film Production",
-          img: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=96&h=112&fit=crop&crop=top"
-        },
-        {
-          text: "It's nice working with Bert. He's fast to respond, very flexible, and his translations have an authentic ring. Great solutions for phrases not easily translatable.",
-          by: "— Tilburg University Language Center",
-          img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=96&h=112&fit=crop&crop=top"
-        },
-        {
-          text: "Working with Joel these past years has been a great experience. Super reliable, easy to communicate with. Our Dutch landing pages feel completely natural to the local audience.",
-          by: "— Landeseiten.de, Digital Agency",
-          img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=96&h=112&fit=crop&crop=top"
-        },
-        {
-          text: "At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure — always of the highest standard. Highly recommended by our entire team.",
-          by: "— Taalcentrum, Language Services",
-          img: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=96&h=112&fit=crop&crop=top"
-        }
-      ];
+      const track = document.getElementById('tcTrack');
+      const dotsWrap = document.getElementById('tcDots');
+      if (!track) return;
 
-      const wrap = document.getElementById('staggerWrap');
-      let list = [...TESTIMONIALS];
-      let cardW = window.innerWidth >= 640 ? 340 : 270;
+      const cards = Array.from(track.querySelectorAll('.tc-card'));
+      const n = cards.length;
+      let current = 0;
+      let animating = false;
 
-      function getCardW() { return window.innerWidth >= 640 ? 340 : 270; }
+      // build dots
+      cards.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'tc-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', 'Slide ' + (i + 1));
+        d.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(d);
+      });
 
-      function render() {
-        // remove old cards
-        wrap.querySelectorAll('.stagger-card').forEach(c => c.remove());
-        cardW = getCardW();
-        const n = list.length;
-        const mid = Math.floor(n / 2);
+      function getCardWidth() {
+        return cards[0].getBoundingClientRect().width + 24; // card + gap
+      }
 
-        list.forEach((t, i) => {
-          const pos = i - mid; // negative=left, 0=center, positive=right
-          const isCenter = pos === 0;
+      function centerOffset() {
+        // offset so active card is perfectly centered in the viewport
+        const wrap = track.parentElement;
+        const wrapW = wrap.offsetWidth;
+        const cw = cards[0].getBoundingClientRect().width;
+        return (wrapW - cw) / 2;
+      }
 
-          const card = document.createElement('div');
-          card.className = 'stagger-card' + (isCenter ? ' is-center' : '');
-
-          // position: centered by 50%/50%, then offset by pos
-          const tx = (cardW / 1.5) * pos;
-          const ty = isCenter ? -65 : (pos % 2 ? 15 : -15);
-          const rot = isCenter ? 0 : (pos % 2 ? 2.5 : -2.5);
-
-          card.style.cssText = `
-            width:${cardW}px;
-            transform: translate(-50%,-50%) translateX(${tx}px) translateY(${ty}px) rotate(${rot}deg);
-            ${isCenter ? 'box-shadow:0 8px 0 4px rgba(255,255,255,0.08);' : ''}
-          `;
-
-          card.innerHTML = `
-            <img class="sc-avatar" src="${t.img}" alt="client" />
-            <p class="sc-text">"${t.text}"</p>
-            <p class="sc-by">${t.by}</p>
-          `;
-
-          card.addEventListener('click', () => move(pos));
-          wrap.insertBefore(card, document.getElementById('staggerPrev').parentElement);
-          wrap.insertBefore(card, wrap.querySelector('.stagger-nav'));
+      function updateClasses() {
+        cards.forEach((c, i) => {
+          c.classList.remove('tc-active', 'tc-side');
+          if (i === current) c.classList.add('tc-active');
+          else if (Math.abs(i - current) === 1 ||
+                   (current === 0 && i === n - 1) ||
+                   (current === n - 1 && i === 0)) {
+            c.classList.add('tc-side');
+          }
+        });
+        dotsWrap.querySelectorAll('.tc-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
         });
       }
 
-      function move(steps) {
-        if (steps === 0) return;
-        const newList = [...list];
-        if (steps > 0) {
-          for (let i = 0; i < steps; i++) { newList.push(newList.shift()); }
-        } else {
-          for (let i = 0; i < -steps; i++) { newList.unshift(newList.pop()); }
-        }
-        list = newList;
-        render();
+      function setPosition(animate) {
+        const cw = getCardWidth();
+        const offset = centerOffset();
+        const tx = offset - current * cw;
+        track.style.transition = animate ? 'transform 0.55s cubic-bezier(0.22,1,0.36,1)' : 'none';
+        track.style.transform = `translateX(${tx}px)`;
       }
 
-      document.getElementById('staggerPrev').addEventListener('click', (e) => { e.stopPropagation(); move(-1); });
-      document.getElementById('staggerNext').addEventListener('click', (e) => { e.stopPropagation(); move(1); });
+      function goTo(index) {
+        if (animating) return;
+        // wrap around
+        current = ((index % n) + n) % n;
+        updateClasses();
+        setPosition(true);
+      }
 
-      window.addEventListener('resize', render);
-      render();
+      // arrow buttons
+      document.getElementById('tcPrev').addEventListener('click', () => goTo(current - 1));
+      document.getElementById('tcNext').addEventListener('click', () => goTo(current + 1));
+
+      // click a side card to jump to it
+      cards.forEach((c, i) => c.addEventListener('click', () => { if (i !== current) goTo(i); }));
+
+      // touch + mouse drag
+      let dragStart = null, dragged = false;
+      track.addEventListener('mousedown', e => { dragStart = e.clientX; dragged = false; track.style.transition = 'none'; });
+      window.addEventListener('mousemove', e => {
+        if (dragStart === null) return;
+        const dx = e.clientX - dragStart;
+        if (Math.abs(dx) > 4) { dragged = true; track.style.transform = `translateX(${centerOffset() - current * getCardWidth() + dx}px)`; }
+      });
+      window.addEventListener('mouseup', e => {
+        if (dragStart === null) return;
+        const dx = e.clientX - dragStart;
+        dragStart = null;
+        if (Math.abs(dx) > 60) goTo(current + (dx < 0 ? 1 : -1));
+        else setPosition(true);
+      });
+      track.addEventListener('touchstart', e => { dragStart = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - dragStart;
+        dragStart = null;
+        if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      // auto-advance
+      let timer = setInterval(() => goTo(current + 1), 5000);
+      track.parentElement.addEventListener('mouseenter', () => clearInterval(timer));
+      track.parentElement.addEventListener('mouseleave', () => { clearInterval(timer); timer = setInterval(() => goTo(current + 1), 5000); });
+
+      window.addEventListener('resize', () => setPosition(false));
+
+      // init
+      updateClasses();
+      setPosition(false);
     })();
 
     // ─── CARD 3D TILT ───
