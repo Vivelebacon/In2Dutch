@@ -429,63 +429,114 @@
     #testimonials .s-label { color: rgba(255,103,0,0.9); }
     #testimonials .s-label::before { background: rgba(255,103,0,0.9); }
 
-    /* ─── TESTIMONIALS INFINITE LOOP ─── */
-    .tloop-wrap {
-      margin-top: 52px;
-      overflow: hidden;
+    /* ─── STACKED TWITTER-STYLE TESTIMONIALS ─── */
+    .tstack-outer {
+      margin-top: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 80px;
+      flex-wrap: wrap;
+    }
+
+    /* Each group = one stack of 3 cards */
+    .tstack {
       position: relative;
-    }
-    /* fade edges */
-    .tloop-wrap::before, .tloop-wrap::after {
-      content: ''; position: absolute; top: 0; bottom: 0; width: 120px;
-      z-index: 2; pointer-events: none;
-    }
-    .tloop-wrap::before { left: 0; background: linear-gradient(to right, rgba(13,26,43,1), transparent); }
-    .tloop-wrap::after  { right: 0; background: linear-gradient(to left, rgba(13,26,43,1), transparent); }
-
-    .tloop-track {
-      display: flex; gap: 24px;
-      width: max-content;
-      animation: tloop 40s linear infinite;
-    }
-    .tloop-wrap:hover .tloop-track { animation-play-state: paused; }
-
-    @keyframes tloop {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+      width: 340px;
+      height: 220px;
     }
 
     .tcard {
+      position: absolute;
+      top: 0; left: 0;
+      width: 340px;
       background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: var(--radius-lg); padding: 36px 32px;
-      position: relative; overflow: hidden;
-      backdrop-filter: blur(10px);
-      width: 380px; flex-shrink: 0;
-      transition: border-color 0.28s, transform 0.28s cubic-bezier(0.22,1,0.36,1);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 22px 24px;
+      backdrop-filter: blur(14px);
+      cursor: pointer;
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1),
+                  border-color 0.3s,
+                  box-shadow 0.3s,
+                  filter 0.45s;
+      transform-origin: bottom center;
+      user-select: none;
     }
-    .tcard:hover { border-color: rgba(255,103,0,0.4); transform: translateY(-4px); }
-    .tcard-quote {
-      font-size: 72px; font-weight: 900;
-      color: rgba(255,103,0,0.12);
-      position: absolute; top: -4px; left: 16px;
-      line-height: 1; pointer-events: none; font-family: Georgia, serif;
+
+    /* back card */
+    .tcard:nth-child(1) {
+      transform: skewY(-8deg) translateY(0px) translateX(0px);
+      filter: grayscale(80%) brightness(0.65);
+      z-index: 1;
     }
-    .tcard-client {
-      font-size: 17px; font-weight: 800;
-      color: var(--orange); margin-bottom: 14px; line-height: 1.25;
-      padding-top: 24px;
+    /* middle card */
+    .tcard:nth-child(2) {
+      transform: skewY(-8deg) translateY(-14px) translateX(16px);
+      filter: grayscale(40%) brightness(0.8);
+      z-index: 2;
     }
-    .tcard-text { font-size: 13.5px; line-height: 1.8; color: rgba(255,255,255,0.7); margin-bottom: 24px; }
-    .tcard-author { display: flex; align-items: center; gap: 12px; }
-    .tcard-avatar {
-      width: 38px; height: 38px; border-radius: 50%;
+    /* front card */
+    .tcard:nth-child(3) {
+      transform: skewY(-8deg) translateY(-28px) translateX(32px);
+      filter: grayscale(0%) brightness(1);
+      z-index: 3;
+    }
+
+    /* hover: fan them out */
+    .tstack:hover .tcard:nth-child(1) {
+      transform: skewY(-8deg) translateY(40px) translateX(-20px);
+      filter: grayscale(0%) brightness(1);
+      border-color: rgba(255,103,0,0.35);
+    }
+    .tstack:hover .tcard:nth-child(2) {
+      transform: skewY(-8deg) translateY(0px) translateX(0px);
+      filter: grayscale(0%) brightness(1);
+      border-color: rgba(255,103,0,0.2);
+    }
+    .tstack:hover .tcard:nth-child(3) {
+      transform: skewY(-8deg) translateY(-40px) translateX(20px);
+      filter: grayscale(0%) brightness(1);
+      border-color: rgba(255,103,0,0.5);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+    }
+
+    /* card internals */
+    .tc-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .tc-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
       background: linear-gradient(135deg, var(--orange), #b84d00);
       display: flex; align-items: center; justify-content: center;
-      font-size: 15px; font-weight: 800; color: #fff; flex-shrink: 0;
+      font-size: 13px; font-weight: 800; color: #fff;
     }
-    .tcard-name { font-size: 13px; font-weight: 700; color: #fff; }
-    .tcard-role { font-size: 11px; color: rgba(255,255,255,0.38); margin-top: 2px; }
+    .tc-meta { flex: 1; min-width: 0; }
+    .tc-name {
+      font-size: 13px; font-weight: 800; color: #fff;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .tc-handle { font-size: 11px; color: rgba(255,255,255,0.38); }
+    .tc-x {
+      width: 16px; height: 16px; fill: rgba(255,255,255,0.55); flex-shrink: 0;
+    }
+    .tc-verified {
+      width: 14px; height: 14px; fill: #1d9bf0;
+    }
+    .tc-text {
+      font-size: 13px; line-height: 1.7;
+      color: rgba(255,255,255,0.78);
+      display: -webkit-box; -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .tc-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11px; color: rgba(255,255,255,0.35);
+    }
+    .tc-stats { display: flex; gap: 14px; }
+    .tc-stat { display: flex; align-items: center; gap: 4px; }
+    .tc-stat svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
     /* ─── CTA ─── */
     #cta {
@@ -569,7 +620,9 @@
       .why-grid { grid-template-columns: 1fr; gap: 48px; }
       .services-grid { grid-template-columns: repeat(4, 1fr); }
       .services-grid .scard { grid-column: span 2 !important; }
-      .tcard { flex: 0 0 calc(100% - 0px); }
+      .tstack-outer { gap: 100px; }
+      .tstack { width: 280px; }
+      .tcard { width: 280px; }
       footer { padding: 28px 40px; }
     }
     @media (max-width: 640px) {
@@ -580,7 +633,9 @@
       .hero-buttons { flex-direction: column; align-items: center; }
       .services-grid { grid-template-columns: 1fr; }
       .services-grid .scard { grid-column: 1 / -1 !important; }
-      .tcard { flex: 0 0 100%; }
+      .tstack-outer { flex-direction: column; align-items: center; gap: 180px; }
+      .tstack { width: 300px; }
+      .tcard { width: 300px; }
       .stats-row { grid-template-columns: 1fr 1fr; }
       .services-head { flex-direction: column; align-items: flex-start; }
       .cta-contacts { flex-direction: column; align-items: center; }
@@ -813,97 +868,135 @@
     </div>
   </section>
 
-  <!-- TESTIMONIALS — Amsterdam canal as atmospheric bg -->
+  <!-- TESTIMONIALS -->
   <section id="testimonials">
-    <div class="sw" style="padding-bottom: 0;">
-      <div class="reveal">
-        <div class="s-label">Client Stories</div>
+    <div class="sw">
+      <div class="reveal" style="text-align:center;">
+        <div class="s-label" style="justify-content:center;">Client Stories</div>
         <h2 class="s-title">What Our <em>Clients</em> Say</h2>
       </div>
-    </div>
-    <!-- full-bleed loop outside .sw padding -->
-    <div class="tloop-wrap reveal" style="margin-top:52px; padding-bottom: 80px;">
-      <div class="tloop-track" id="testiTrack">
 
-        <!-- SET A -->
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Loft Film GmbH</div>
-          <p class="tcard-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality — exactly what you want when dealing with multilingual content. Highly recommended.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">L</div>
-            <div><div class="tcard-name">Loft Film GmbH</div><div class="tcard-role">Film Production</div></div>
+      <div class="tstack-outer reveal">
+
+        <!-- STACK 1: Loft Film + Tilburg + Landeseiten -->
+        <div class="tstack">
+          <!-- back -->
+          <div class="tcard">
+            <div class="tc-header">
+              <div class="tc-avatar">L</div>
+              <div class="tc-meta">
+                <div class="tc-name">Loft Film GmbH <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
+                <div class="tc-handle">@loftfilmgmbh</div>
+              </div>
+              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <p class="tc-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality.</p>
+            <div class="tc-footer">
+              <span>Film Production</span>
+              <div class="tc-stats">
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 64</div>
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 12</div>
+              </div>
+            </div>
+          </div>
+          <!-- middle -->
+          <div class="tcard">
+            <div class="tc-header">
+              <div class="tc-avatar">T</div>
+              <div class="tc-meta">
+                <div class="tc-name">Tilburg University <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
+                <div class="tc-handle">@tilburguniversity</div>
+              </div>
+              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <p class="tc-text">It's nice working with Bert. He's fast to respond and very flexible. His translations have an authentic ring and he comes up with great solutions for phrases that are not easily translatable.</p>
+            <div class="tc-footer">
+              <span>Language Center</span>
+              <div class="tc-stats">
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 91</div>
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 17</div>
+              </div>
+            </div>
+          </div>
+          <!-- front -->
+          <div class="tcard">
+            <div class="tc-header">
+              <div class="tc-avatar">L</div>
+              <div class="tc-meta">
+                <div class="tc-name">Landeseiten.de <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
+                <div class="tc-handle">@landeseiten</div>
+              </div>
+              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <p class="tc-text">Working with Joel these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. Our Dutch landing pages feel natural to the local audience.</p>
+            <div class="tc-footer">
+              <span>Digital Agency</span>
+              <div class="tc-stats">
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 138</div>
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 29</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Tilburg University Language Center</div>
-          <p class="tcard-text">It's nice working with Bert. He's fast to respond and very flexible in taking on assignments. His translations have an authentic ring to it and he comes up with good solutions to phrases that are not quite easily translatable from one language into the other.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">T</div>
-            <div><div class="tcard-name">Tilburg University Language Center</div><div class="tcard-role">Academic Institution</div></div>
+        <!-- STACK 2: Taalcentrum + two more slots cycling the same clients -->
+        <div class="tstack">
+          <!-- back -->
+          <div class="tcard">
+            <div class="tc-header">
+              <div class="tc-avatar" style="background:linear-gradient(135deg,#1d9bf0,#0e5a8a)">T</div>
+              <div class="tc-meta">
+                <div class="tc-name">Taalcentrum <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
+                <div class="tc-handle">@taalcentrum</div>
+              </div>
+              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <p class="tc-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure — always of the highest standard.</p>
+            <div class="tc-footer">
+              <span>Language Services</span>
+              <div class="tc-stats">
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 203</div>
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 41</div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Landeseiten.de</div>
-          <p class="tcard-text">Working with Joel on our Dutch translations these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. From the first message to the final files, everything runs smoothly and professionally. He really pays attention to the details, and it shows.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">L</div>
-            <div><div class="tcard-name">Landeseiten.de</div><div class="tcard-role">Digital Agency</div></div>
+          <!-- middle -->
+          <div class="tcard">
+            <div class="tc-header">
+              <div class="tc-avatar">L</div>
+              <div class="tc-meta">
+                <div class="tc-name">Loft Film GmbH <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
+                <div class="tc-handle">@loftfilmgmbh</div>
+              </div>
+              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <p class="tc-text">He's fast, reliable, and delivers work of excellent quality — exactly what you want when dealing with multilingual content. Highly recommended.</p>
+            <div class="tc-footer">
+              <span>Film Production</span>
+              <div class="tc-stats">
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 55</div>
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 9</div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Taalcentrum</div>
-          <p class="tcard-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure. His services across the board are always of the highest standard — we're happy to continue working together and would entrust Bert with any translation assignment.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">T</div>
-            <div><div class="tcard-name">Taalcentrum</div><div class="tcard-role">Language Services</div></div>
-          </div>
-        </div>
-
-        <!-- SET B — exact duplicate for seamless loop -->
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Loft Film GmbH</div>
-          <p class="tcard-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality — exactly what you want when dealing with multilingual content. Highly recommended.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">L</div>
-            <div><div class="tcard-name">Loft Film GmbH</div><div class="tcard-role">Film Production</div></div>
-          </div>
-        </div>
-
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Tilburg University Language Center</div>
-          <p class="tcard-text">It's nice working with Bert. He's fast to respond and very flexible in taking on assignments. His translations have an authentic ring to it and he comes up with good solutions to phrases that are not quite easily translatable from one language into the other.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">T</div>
-            <div><div class="tcard-name">Tilburg University Language Center</div><div class="tcard-role">Academic Institution</div></div>
-          </div>
-        </div>
-
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Landeseiten.de</div>
-          <p class="tcard-text">Working with Joel on our Dutch translations these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. From the first message to the final files, everything runs smoothly and professionally. He really pays attention to the details, and it shows.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">L</div>
-            <div><div class="tcard-name">Landeseiten.de</div><div class="tcard-role">Digital Agency</div></div>
-          </div>
-        </div>
-
-        <div class="tcard">
-          <div class="tcard-quote">"</div>
-          <div class="tcard-client">Taalcentrum</div>
-          <p class="tcard-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and accuracy even under time pressure. His services across the board are always of the highest standard — we're happy to continue working together and would entrust Bert with any translation assignment.</p>
-          <div class="tcard-author">
-            <div class="tcard-avatar">T</div>
-            <div><div class="tcard-name">Taalcentrum</div><div class="tcard-role">Language Services</div></div>
+          <!-- front -->
+          <div class="tcard">
+            <div class="tc-header">
+              <div class="tc-avatar" style="background:linear-gradient(135deg,#1d9bf0,#0e5a8a)">T</div>
+              <div class="tc-meta">
+                <div class="tc-name">Taalcentrum <svg class="tc-verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div>
+                <div class="tc-handle">@taalcentrum</div>
+              </div>
+              <svg class="tc-x" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <p class="tc-text">We're happy to continue working together and would entrust Bert with any translation assignment. Highly recommended by all of our team.</p>
+            <div class="tc-footer">
+              <span>Language Services · Since 2022</span>
+              <div class="tc-stats">
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> 178</div>
+                <div class="tc-stat"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg> 34</div>
+              </div>
+            </div>
           </div>
         </div>
 
