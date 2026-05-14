@@ -378,6 +378,15 @@
       transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), box-shadow 0.28s, border-color 0.28s;
     }
     .scard:hover { transform: translateY(-7px); box-shadow: 0 20px 50px rgba(0,0,0,0.08); border-color: var(--orange-mid); }
+    .scard-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      opacity: 0.10;
+      transition: opacity 0.32s;
+      pointer-events: none;
+      border-radius: var(--radius-lg);
+    }
+    .scard:hover .scard-bg { opacity: 0.18; }
     .scard-shine {
       position: absolute; inset: 0;
       background: linear-gradient(135deg, rgba(255,103,0,0.04) 0%, transparent 55%);
@@ -797,6 +806,7 @@
 
         <!-- 01 E-Learning & Training -->
         <div class="scard reveal" style="transition-delay:0s">
+          <div class="scard-bg" style="background-image:url('img/svc-1-elearning.jpg')"></div>
           <div class="scard-shine"></div>
           <div class="scard-num">01</div>
           <div class="scard-ic">
@@ -809,6 +819,7 @@
 
         <!-- 02 Legal Docs & Tech -->
         <div class="scard reveal" style="transition-delay:0.08s">
+          <div class="scard-bg" style="background-image:url('img/svc-2-legal.jpg')"></div>
           <div class="scard-shine"></div>
           <div class="scard-num">02</div>
           <div class="scard-ic">
@@ -821,6 +832,7 @@
 
         <!-- 03 Audiovisual & Multimedia -->
         <div class="scard reveal" style="transition-delay:0.16s">
+          <div class="scard-bg" style="background-image:url('img/svc-3-audiovisual.jpg')"></div>
           <div class="scard-shine"></div>
           <div class="scard-num">03</div>
           <div class="scard-ic">
@@ -833,6 +845,7 @@
 
         <!-- 04 Marketing & Websites -->
         <div class="scard reveal" style="transition-delay:0.24s">
+          <div class="scard-bg" style="background-image:url('img/svc-4-marketing.jpg')"></div>
           <div class="scard-shine"></div>
           <div class="scard-num">04</div>
           <div class="scard-ic">
@@ -845,6 +858,7 @@
 
         <!-- 05 Business & Corporate Content -->
         <div class="scard reveal" style="transition-delay:0.32s">
+          <div class="scard-bg" style="background-image:url('img/svc-5-business.jpg')"></div>
           <div class="scard-shine"></div>
           <div class="scard-num">05</div>
           <div class="scard-ic">
