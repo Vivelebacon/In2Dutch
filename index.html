@@ -422,123 +422,55 @@
 
     /* ─── TESTIMONIALS ─── */
     #testimonials {
-      /* Amsterdam canal as subtle background texture */
-      background-color: var(--navy);
-      background-image: url('https://images.unsplash.com/photo-1512470604994-2f1e5d37f078?w=1600&q=60&auto=format&fit=crop');
-      background-size: cover; background-position: center;
-      position: relative;
+      background: var(--white);
     }
-    #testimonials::before {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(13,26,43,0.92);
-      z-index: 0;
-    }
-    #testimonials .sw { position: relative; z-index: 1; }
-    #testimonials .s-title { color: #fff; }
-    #testimonials .s-label { color: rgba(255,103,0,0.9); }
-    #testimonials .s-label::before { background: rgba(255,103,0,0.9); }
+    #testimonials .s-title { color: var(--text); }
+    #testimonials .s-label { color: var(--orange); }
+    #testimonials .s-label::before { background: var(--orange); }
 
-    /* ─── TESTIMONIALS CAROUSEL ─── */
-    .tc-outer {
+    .tc-grid {
       margin-top: 56px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-    }
-
-    .tc-track-wrap {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-    }
-    /* fade left/right edges */
-    .tc-track-wrap::before,
-    .tc-track-wrap::after {
-      content: ''; position: absolute; top: 0; bottom: 0; width: 160px;
-      z-index: 2; pointer-events: none;
-    }
-    .tc-track-wrap::before { left: 0;  background: linear-gradient(to right, rgba(13,26,43,1) 0%, transparent 100%); }
-    .tc-track-wrap::after  { right: 0; background: linear-gradient(to left,  rgba(13,26,43,1) 0%, transparent 100%); }
-
-    .tc-track {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
-      transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
-      will-change: transform;
-      padding: 24px 0 32px;
     }
 
     .tc-card {
-      flex: 0 0 420px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 20px;
-      padding: 36px 32px 32px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 36px 36px;
       position: relative;
-      backdrop-filter: blur(12px);
-      transition: border-color 0.3s, box-shadow 0.35s, transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s;
-      opacity: 0.45;
-      transform: scale(0.93);
-      cursor: pointer;
+      transition: box-shadow 0.28s, border-color 0.28s, transform 0.28s cubic-bezier(0.22,1,0.36,1);
     }
-    .tc-card.tc-active {
-      border-color: rgba(255,103,0,0.5);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-      opacity: 1;
-      transform: scale(1);
-    }
-    .tc-card.tc-side {
-      opacity: 0.6;
-      transform: scale(0.96);
+    .tc-card:hover {
+      border-color: var(--orange-mid);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.07);
+      transform: translateY(-4px);
     }
 
     .tc-bigquote {
-      font-size: 64px; font-weight: 900; line-height: 1;
-      color: rgba(255,103,0,0.18);
+      font-size: 72px; font-weight: 900; line-height: 1;
+      color: rgba(255,103,0,0.12);
       font-family: Georgia, serif;
-      position: absolute; top: 10px; left: 22px;
+      position: absolute; top: 12px; left: 28px;
       pointer-events: none;
     }
     .tc-company {
       font-size: 15px; font-weight: 800;
       color: var(--orange);
       margin-bottom: 16px;
-      padding-top: 20px;
+      padding-top: 24px;
     }
     .tc-text {
-      font-size: 14px; line-height: 1.8;
-      color: rgba(255,255,255,0.75);
+      font-size: 14px; line-height: 1.85;
+      color: var(--muted);
       margin-bottom: 24px;
     }
     .tc-role {
       font-size: 12px; font-style: italic;
-      color: rgba(255,255,255,0.35);
+      color: rgba(0,0,0,0.3);
     }
-
-    /* nav */
-    .tc-controls {
-      display: flex; align-items: center; gap: 20px;
-    }
-    .tc-arrow {
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.13);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    }
-    .tc-arrow:hover { background: var(--orange); border-color: var(--orange); transform: scale(1.08); }
-    .tc-arrow svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-    .tc-dots { display: flex; gap: 8px; }
-    .tc-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      cursor: pointer;
-      transition: background 0.25s, transform 0.25s;
-      border: none;
-    }
-    .tc-dot.active { background: var(--orange); transform: scale(1.45); }
 
     /* ─── CTA ─── */
     #cta {
@@ -622,8 +554,7 @@
       .why-grid { grid-template-columns: 1fr; gap: 48px; }
       .services-grid { grid-template-columns: repeat(4, 1fr); }
       .services-grid .scard { grid-column: span 2 !important; }
-      .tc-card { flex: 0 0 340px; }
-      .tc-track-wrap::before, .tc-track-wrap::after { width: 80px; }
+      .tc-grid { grid-template-columns: 1fr; }
       footer { padding: 28px 40px; }
     }
     @media (max-width: 640px) {
@@ -634,8 +565,7 @@
       .hero-buttons { flex-direction: column; align-items: center; }
       .services-grid { grid-template-columns: 1fr; }
       .services-grid .scard { grid-column: 1 / -1 !important; }
-      .tc-card { flex: 0 0 290px; padding: 28px 22px 24px; }
-      .tc-track-wrap::before, .tc-track-wrap::after { width: 40px; }
+      .tc-card { padding: 28px 22px 24px; }
       .stats-row { grid-template-columns: 1fr 1fr; }
       .services-head { flex-direction: column; align-items: flex-start; }
       .cta-contacts { flex-direction: column; align-items: center; }
@@ -879,43 +809,18 @@
         <div class="s-label" style="justify-content:center;">Client Stories</div>
         <h2 class="s-title">What Our <em>Clients</em> Say</h2>
       </div>
-      <div class="tc-outer reveal">
-        <div class="tc-track-wrap">
-          <div class="tc-track" id="tcTrack">
-            <div class="tc-card">
-              <div class="tc-bigquote">"</div>
-              <div class="tc-company">Loft Film GmbH</div>
-              <p class="tc-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. He's fast, reliable, and delivers work of excellent quality exactly what you want when dealing with multilingual content. Highly recommended.</p>
-              <p class="tc-role">Film Production</p>
-            </div>
-            <div class="tc-card">
-              <div class="tc-bigquote">"</div>
-              <div class="tc-company">Tilburg University Language Center</div>
-              <p class="tc-text">It's nice working with Bert. He's fast to respond and very flexible in taking on assignments. His translations have an authentic ring to it and he comes up with good solutions to phrases that are not quite easily translatable from one language into the other.</p>
-              <p class="tc-role">Academic Institution</p>
-            </div>
-            <div class="tc-card">
-              <div class="tc-bigquote">"</div>
-              <div class="tc-company">Landeseiten.de</div>
-              <p class="tc-text">Working with Joel on our Dutch translations these past years has been a great experience. He's super reliable, easy to communicate with, and always delivers high-quality work. From the first message to the final files, everything runs smoothly and professionally. He really pays attention to the details, and it shows. Our Dutch landing pages are clear, accurate, and feel natural to the local audience. I wouldn't hesitate to recommend Joel to anyone looking for a solid, professional translator who's also just really nice to work with.</p>
-              <p class="tc-role">Digital Agency</p>
-            </div>
-            <div class="tc-card">
-              <div class="tc-bigquote">"</div>
-              <div class="tc-company">Taalcentrum</div>
-              <p class="tc-text">At Taalcentrum we've collaborated with In2Dutch since 2022. Bert delivers quality and a eye for detail, even under time pressure. His services across the board have been a pleasure to work with and we'd be happy to continue and recommend his translation and localization services to all of them.</p>
-              <p class="tc-role">Language Services</p>
-            </div>
-          </div>
+      <div class="tc-grid reveal">
+        <div class="tc-card">
+          <div class="tc-bigquote">"</div>
+          <div class="tc-company">Loft Film GmbH</div>
+          <p class="tc-text">We've worked with Joel on several translation projects into Dutch, and it's always been a smooth and professional experience. Fast, reliable, and delivers work of excellent quality: exactly what you want when dealing with multilingual content. Highly recommended.</p>
+          <p class="tc-role">Film Production</p>
         </div>
-        <div class="tc-controls">
-          <button class="tc-arrow" id="tcPrev" aria-label="Previous">
-            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <div class="tc-dots" id="tcDots"></div>
-          <button class="tc-arrow" id="tcNext" aria-label="Next">
-            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
+        <div class="tc-card">
+          <div class="tc-bigquote">"</div>
+          <div class="tc-company">Landeseiten.de</div>
+          <p class="tc-text">Working with Joel on our Dutch translations these past years has been a great experience. Always delivers high-quality work. Our Dutch landing pages are clear, accurate, and feel natural to the local audience. I wouldn't hesitate to recommend Joel to anyone looking for a solid translation partner.</p>
+          <p class="tc-role">Digital Agency</p>
         </div>
       </div>
     </div>
@@ -1020,109 +925,6 @@
       if (v && scrollY < innerHeight) v.style.transform = `translateY(${scrollY * 0.28}px)`;
     }, { passive: true });
 
-    // ─── TESTIMONIALS CAROUSEL ───
-    (function() {
-      const track = document.getElementById('tcTrack');
-      const dotsWrap = document.getElementById('tcDots');
-      if (!track) return;
-
-      const cards = Array.from(track.querySelectorAll('.tc-card'));
-      const n = cards.length;
-      let current = 0;
-      let animating = false;
-
-      // build dots
-      cards.forEach((_, i) => {
-        const d = document.createElement('button');
-        d.className = 'tc-dot' + (i === 0 ? ' active' : '');
-        d.setAttribute('aria-label', 'Slide ' + (i + 1));
-        d.addEventListener('click', () => goTo(i));
-        dotsWrap.appendChild(d);
-      });
-
-      function getCardWidth() {
-        return cards[0].getBoundingClientRect().width + 24; // card + gap
-      }
-
-      function centerOffset() {
-        // offset so active card is perfectly centered in the viewport
-        const wrap = track.parentElement;
-        const wrapW = wrap.offsetWidth;
-        const cw = cards[0].getBoundingClientRect().width;
-        return (wrapW - cw) / 2;
-      }
-
-      function updateClasses() {
-        cards.forEach((c, i) => {
-          c.classList.remove('tc-active', 'tc-side');
-          if (i === current) c.classList.add('tc-active');
-          else if (Math.abs(i - current) === 1 ||
-                   (current === 0 && i === n - 1) ||
-                   (current === n - 1 && i === 0)) {
-            c.classList.add('tc-side');
-          }
-        });
-        dotsWrap.querySelectorAll('.tc-dot').forEach((d, i) => {
-          d.classList.toggle('active', i === current);
-        });
-      }
-
-      function setPosition(animate) {
-        const cw = getCardWidth();
-        const offset = centerOffset();
-        const tx = offset - current * cw;
-        track.style.transition = animate ? 'transform 0.55s cubic-bezier(0.22,1,0.36,1)' : 'none';
-        track.style.transform = `translateX(${tx}px)`;
-      }
-
-      function goTo(index) {
-        if (animating) return;
-        // wrap around
-        current = ((index % n) + n) % n;
-        updateClasses();
-        setPosition(true);
-      }
-
-      // arrow buttons
-      document.getElementById('tcPrev').addEventListener('click', () => goTo(current - 1));
-      document.getElementById('tcNext').addEventListener('click', () => goTo(current + 1));
-
-      // click a side card to jump to it
-      cards.forEach((c, i) => c.addEventListener('click', () => { if (i !== current) goTo(i); }));
-
-      // touch + mouse drag
-      let dragStart = null, dragged = false;
-      track.addEventListener('mousedown', e => { dragStart = e.clientX; dragged = false; track.style.transition = 'none'; });
-      window.addEventListener('mousemove', e => {
-        if (dragStart === null) return;
-        const dx = e.clientX - dragStart;
-        if (Math.abs(dx) > 4) { dragged = true; track.style.transform = `translateX(${centerOffset() - current * getCardWidth() + dx}px)`; }
-      });
-      window.addEventListener('mouseup', e => {
-        if (dragStart === null) return;
-        const dx = e.clientX - dragStart;
-        dragStart = null;
-        if (Math.abs(dx) > 60) goTo(current + (dx < 0 ? 1 : -1));
-        else setPosition(true);
-      });
-      track.addEventListener('touchstart', e => { dragStart = e.touches[0].clientX; }, { passive: true });
-      track.addEventListener('touchend', e => {
-        const dx = e.changedTouches[0].clientX - dragStart;
-        dragStart = null;
-        if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
-      }, { passive: true });
-
-      // auto-advance
-      let timer = setInterval(() => goTo(current + 1), 5000);
-      track.parentElement.addEventListener('mouseenter', () => clearInterval(timer));
-      track.parentElement.addEventListener('mouseleave', () => { clearInterval(timer); timer = setInterval(() => goTo(current + 1), 5000); });
-
-      window.addEventListener('resize', () => setPosition(false));
-
-      // init
-      updateClasses();
-      setPosition(false);
-    })();
 
     // ─── CARD 3D TILT ───
     document.querySelectorAll('.scard').forEach(card => {
