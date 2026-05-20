@@ -603,8 +603,8 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-video-wrap">
-      <video muted playsinline preload="auto">
-        <source src="hero.mp4" type="video/mp4" />
+      <video autoplay muted playsinline loop preload="auto">
+        <source src="hero-reverse.mp4" type="video/mp4" />
       </video>
     </div>
     <div class="hero-overlay"></div>
@@ -926,25 +926,6 @@
         el.style.transform = 'translateY(0)';
       }));
     });
-
-    // ─── REVERSE VIDEO PLAYBACK ───
-    const heroVideo = document.querySelector('.hero-video-wrap video');
-    if (heroVideo) {
-      heroVideo.addEventListener('loadedmetadata', () => {
-        heroVideo.currentTime = heroVideo.duration;
-        let lastTs = null;
-        const stepBack = (ts) => {
-          if (lastTs !== null) {
-            const delta = (ts - lastTs) / 1000;
-            heroVideo.currentTime -= delta;
-            if (heroVideo.currentTime <= 0) heroVideo.currentTime = heroVideo.duration;
-          }
-          lastTs = ts;
-          requestAnimationFrame(stepBack);
-        };
-        requestAnimationFrame(stepBack);
-      });
-    }
 
     // ─── PARALLAX VIDEO ───
     window.addEventListener('scroll', () => {
