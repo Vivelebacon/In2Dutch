@@ -591,18 +591,28 @@
     #preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
     body.loading { overflow: hidden; }
 
-    .pl-scene { perspective: 600px; }
+    .pl-scene { perspective: 700px; }
 
     .pl-icon {
-      width: 220px; height: auto; display: block;
+      width: 240px; height: auto; display: block;
+      /* Stacked shadows simulate extruded side faces — each step is one "slice" of depth */
       filter:
-        drop-shadow(0 0 24px rgba(255,160,0,0.75))
-        drop-shadow(0 0 60px rgba(255,120,0,0.4));
-      animation: pl-3d-spin 1.6s linear infinite;
+        drop-shadow(1px 1px 0 #c44000)
+        drop-shadow(2px 2px 0 #ba3800)
+        drop-shadow(3px 3px 0 #ae3000)
+        drop-shadow(4px 4px 0 #a22800)
+        drop-shadow(5px 5px 0 #961f00)
+        drop-shadow(6px 6px 0 #8a1500)
+        drop-shadow(7px 7px 0 #7c0b00)
+        drop-shadow(8px 8px 0 #6e0000)
+        drop-shadow(0 0 28px rgba(255,155,0,0.80))
+        drop-shadow(0 0 72px rgba(255,95,0,0.35));
+      animation: pl-3d-spin 2s linear infinite;
     }
     @keyframes pl-3d-spin {
-      from { transform: rotateY(0deg); }
-      to   { transform: rotateY(360deg); }
+      /* slight rotateX tilt gives the "viewing from above" 3D perspective */
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to   { transform: rotateX(-10deg) rotateY(360deg); }
     }
   </style>
 </head>
@@ -615,9 +625,10 @@
       <svg class="pl-icon" viewBox="27 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="sg" x1="27" y1="0" x2="66" y2="40" gradientUnits="userSpaceOnUse">
-            <stop offset="0%"   stop-color="#FFD700"/>
-            <stop offset="45%"  stop-color="#FF8C00"/>
-            <stop offset="100%" stop-color="#FF6700"/>
+            <stop offset="0%"   stop-color="#FFE566"/>
+            <stop offset="22%"  stop-color="#FFBB00"/>
+            <stop offset="58%"  stop-color="#FF7200"/>
+            <stop offset="100%" stop-color="#D83E00"/>
           </linearGradient>
         </defs>
         <path d="M52.8659 5.56375H42.1169C39.5581 5.56375 37.3384 7.33896 36.7609 9.84807L35.6714 14.5855H54.8366C56.1434 14.5855 56.961 15.6517 56.6555 16.9702C56.5036 17.6295 56.101 18.2248 55.5747 18.6548C55.0467 19.0866 54.3934 19.355 53.7382 19.355H39.6376C36.6744 19.355 34.1015 21.4127 33.434 24.3181L32.076 30.2248C32.5033 30.1626 32.9413 30.1324 33.3916 30.1324C36.8245 30.1324 39.6358 31.9289 40.4552 34.4362H51.2042C53.7629 34.4362 55.9827 32.661 56.5601 30.1519L57.6497 25.4145H38.4844C37.1777 25.4145 36.3601 24.3483 36.6656 23.0298C36.8174 22.3705 37.2201 21.7752 37.7463 21.3452C38.2743 20.9134 38.9277 20.645 39.5828 20.645H53.6835C56.6466 20.645 59.2195 18.5873 59.8871 15.6819L61.245 9.77521C60.8177 9.8374 60.3797 9.86761 59.9294 9.86761C56.4965 9.86761 53.6852 8.07108 52.8659 5.56375Z" fill="url(#sg)"/>
