@@ -345,17 +345,6 @@
     .pillar-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
     .pillar-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
 
-    /* Stats */
-    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 36px; }
-    .stat-box {
-      background: var(--text); border-radius: var(--radius);
-      padding: 22px 18px; text-align: center;
-      transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
-    }
-    .stat-box:hover { transform: translateY(-4px); }
-    .stat-box:first-child { background: var(--orange); }
-    .stat-num { font-size: 36px; font-weight: 900; color: #fff; line-height: 1; margin-bottom: 4px; }
-    .stat-lbl { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; }
 
     /* ─── SERVICES ─── */
     #services {
@@ -607,12 +596,11 @@
         drop-shadow(8px 8px 0 #6e0000)
         drop-shadow(0 0 28px rgba(255,155,0,0.80))
         drop-shadow(0 0 72px rgba(255,95,0,0.35));
-      animation: pl-3d-spin 2s linear infinite;
+      animation: pl-3d-spin 5s linear infinite;
     }
     @keyframes pl-3d-spin {
-      /* slight rotateX tilt gives the "viewing from above" 3D perspective */
-      from { transform: rotateX(-10deg) rotateY(0deg); }
-      to   { transform: rotateX(-10deg) rotateY(360deg); }
+      from { transform: rotateX(-5deg) rotateY(0deg); }
+      to   { transform: rotateX(-5deg) rotateY(360deg); }
     }
   </style>
 </head>
@@ -726,20 +714,6 @@
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </span>
           </a>
-          <div class="stats-row">
-            <div class="stat-box">
-              <div class="stat-num">100%</div>
-              <div class="stat-lbl">Quality Checked</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-num">★ 5.0</div>
-              <div class="stat-lbl">Client Rating</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-num">Fast</div>
-              <div class="stat-lbl">Turnaround</div>
-            </div>
-          </div>
         </div>
         <div class="pillars reveal-r">
           <div class="pillar">
