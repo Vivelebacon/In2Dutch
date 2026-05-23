@@ -427,6 +427,7 @@
     .pillar-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
 
     /* Stats */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; }
     .stat-box {
       background: var(--navy); border-radius: var(--radius);
       padding: 26px 20px; text-align: center;
@@ -832,25 +833,39 @@
       align-items: center;
       justify-content: center;
     }
-    .pl-scene { perspective: 700px; }
-    .pl-icon {
-      width: 220px; height: auto; display: block;
-      filter:
-        drop-shadow(1px 1px 0 #c44000)
-        drop-shadow(2px 2px 0 #ba3800)
-        drop-shadow(3px 3px 0 #ae3000)
-        drop-shadow(4px 4px 0 #a22800)
-        drop-shadow(5px 5px 0 #961f00)
-        drop-shadow(6px 6px 0 #8a1500)
-        drop-shadow(7px 7px 0 #7c0b00)
-        drop-shadow(8px 8px 0 #6e0000)
-        drop-shadow(0 0 28px rgba(255,155,0,0.70))
-        drop-shadow(0 0 72px rgba(255,95,0,0.25));
-      animation: pl-3d-spin 5s linear infinite;
+    .pl-spinner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease;
     }
-    @keyframes pl-3d-spin {
-      from { transform: rotateX(-5deg) rotateY(0deg); }
-      to   { transform: rotateX(-5deg) rotateY(360deg); }
+    .spinner-ring {
+      width: 64px;
+      height: 64px;
+      border: 4px solid rgba(255, 103, 0, 0.15);
+      border-top-color: #FF6700;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .pl-video {
+      position: relative;
+      z-index: 10;
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+    @media (min-width: 768px) {
+      .pl-video {
+        width: 420px;
+        height: 420px;
+      }
     }
 
     /* ─── 3D HERO & FLOATING CARDS ─── */
@@ -991,20 +1006,13 @@
 
   <!-- PRELOADER -->
   <div id="preloader">
-    <div class="pl-scene">
-      <svg class="pl-icon" viewBox="27 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="sg" x1="27" y1="0" x2="66" y2="40" gradientUnits="userSpaceOnUse">
-            <stop offset="0%"   stop-color="#FFE566"/>
-            <stop offset="22%"  stop-color="#FFBB00"/>
-            <stop offset="58%"  stop-color="#FF7200"/>
-            <stop offset="100%" stop-color="#D83E00"/>
-          </linearGradient>
-        </defs>
-        <path d="M52.8659 5.56375H42.1169C39.5581 5.56375 37.3384 7.33896 36.7609 9.84807L35.6714 14.5855H54.8366C56.1434 14.5855 56.961 15.6517 56.6555 16.9702C56.5036 17.6295 56.101 18.2248 55.5747 18.6548C55.0467 19.0866 54.3934 19.355 53.7382 19.355H39.6376C36.6744 19.355 34.1015 21.4127 33.434 24.3181L32.076 30.2248C32.5033 30.1626 32.9413 30.1324 33.3916 30.1324C36.8245 30.1324 39.6358 31.9289 40.4552 34.4362H51.2042C53.7629 34.4362 55.9827 32.661 56.5601 30.1519L57.6497 25.4145H38.4844C37.1777 25.4145 36.3601 24.3483 36.6656 23.0298C36.8174 22.3705 37.2201 21.7752 37.7463 21.3452C38.2743 20.9134 38.9277 20.645 39.5828 20.645H53.6835C56.6466 20.645 59.2195 18.5873 59.8871 15.6819L61.245 9.77521C60.8177 9.8374 60.3797 9.86761 59.9294 9.86761C56.4965 9.86761 53.6852 8.07108 52.8659 5.56375Z" fill="url(#sg)"/>
-        <path d="M59.9294 8.08174C62.983 8.08174 65.4584 6.27258 65.4584 4.04087C65.4584 1.80916 62.983 0 59.9294 0C56.8758 0 54.4004 1.80916 54.4004 4.04087C54.4004 6.27258 56.8758 8.08174 59.9294 8.08174Z" fill="url(#sg)"/>
-        <path d="M33.3881 40C36.4417 40 38.9171 38.1908 38.9171 35.9591C38.9171 33.7274 36.4417 31.9183 33.3881 31.9183C30.3345 31.9183 27.8591 33.7274 27.8591 35.9591C27.8591 38.1908 30.3345 40 33.3881 40Z" fill="url(#sg)"/>
-      </svg>
+    <div class="pl-container">
+      <div id="preloader-spinner" class="pl-spinner">
+        <div class="spinner-ring"></div>
+      </div>
+      <video id="preloader-video" autoplay muted playsinline loop class="pl-video">
+        <source src="videos/loading.mp4" type="video/mp4" />
+      </video>
     </div>
   </div>
 
@@ -1131,6 +1139,20 @@
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </span>
           </a>
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-num">100%</div>
+              <div class="stat-lbl">Quality Checked</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">★ 5.0</div>
+              <div class="stat-lbl">Client Rating</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">Fast</div>
+              <div class="stat-lbl">Turnaround</div>
+            </div>
+          </div>
         </div>
         <div class="pillars reveal-r">
           <div class="pillar">
@@ -1395,6 +1417,20 @@
     <script>
     // ─── PRELOADER ───
     const preloader = document.getElementById('preloader');
+    const plVideo = document.getElementById('preloader-video');
+    const plSpinner = document.getElementById('preloader-spinner');
+
+    if (plVideo) {
+      const showVideo = () => {
+        plVideo.style.opacity = '1';
+        if (plSpinner) plSpinner.style.opacity = '0';
+      };
+      plVideo.addEventListener('playing', showVideo);
+      plVideo.addEventListener('loadeddata', showVideo);
+      // Failsafe in case events don't fire
+      setTimeout(showVideo, 1200);
+    }
+
     const dismissPreloader = () => {
       document.body.classList.remove('loading');
       if (preloader) {
@@ -1402,10 +1438,12 @@
         preloader.addEventListener('transitionend', () => preloader.remove(), { once: true });
       }
     };
+
     const loadStartTime = Date.now();
     window.addEventListener('load', () => {
       const elapsed = Date.now() - loadStartTime;
-      setTimeout(dismissPreloader, Math.max(0, 1800 - elapsed));
+      const delay = Math.max(0, 1800 - elapsed); // display loading animation for at least 1.8s for visual impact
+      setTimeout(dismissPreloader, delay);
     });
     setTimeout(dismissPreloader, 5000); // failsafe
 
