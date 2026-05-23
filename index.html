@@ -893,25 +893,6 @@
       transform: translateZ(50px);
     }
     
-    .floating-card {
-      position: absolute;
-      z-index: 4;
-      width: 180px;
-      padding: 22px 20px;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(16px) saturate(120%);
-      -webkit-backdrop-filter: blur(16px) saturate(120%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      color: #fff;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 
-                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      transition: transform 0.1s ease-out, opacity 0.8s ease-out;
-      pointer-events: none;
-      transform-style: preserve-3d;
-      overflow: hidden;
-    }
-    
     .floating-card::before {
       content: '';
       position: absolute;
@@ -932,65 +913,6 @@
       100% { transform: translateX(100%) skewX(-30deg); }
     }
     
-    .float-left {
-      left: 8%;
-      top: 32%;
-      animation: float-left-loop 5s ease-in-out infinite alternate;
-    }
-    
-    .float-right {
-      right: 8%;
-      top: 50%;
-      animation: float-right-loop 6s ease-in-out infinite alternate;
-    }
-    
-    @keyframes float-left-loop {
-      0% { transform: translate3d(0, 0, 40px) rotate(0deg); }
-      100% { transform: translate3d(0, -15px, 60px) rotate(2deg); }
-    }
-    
-    @keyframes float-right-loop {
-      0% { transform: translate3d(0, 0, 50px) rotate(0deg); }
-      100% { transform: translate3d(0, 15px, 70px) rotate(-2deg); }
-    }
-    
-    .fc-glow {
-      position: absolute;
-      width: 60px; height: 60px;
-      background: var(--orange);
-      filter: blur(40px);
-      opacity: 0.35;
-      top: -10px; right: -10px;
-      border-radius: 50%;
-    }
-    
-    .fc-badge {
-      display: inline-block;
-      font-size: 9px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--orange);
-      margin-bottom: 8px;
-      transform: translateZ(10px);
-    }
-    
-    .fc-title {
-      font-family: var(--font-title);
-      font-size: 32px;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 4px;
-      letter-spacing: 0.05em;
-      transform: translateZ(20px);
-    }
-    
-    .fc-desc {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.65);
-      font-weight: 500;
-      transform: translateZ(15px);
-    }
     
     @media (max-width: 1120px) {
       .float-left { left: 4%; }
@@ -1056,25 +978,6 @@
       </video>
     </div>
     <div class="hero-overlay"></div>
-
-    <!-- 3D FLOATING CARDS -->
-    <div class="floating-card float-left">
-      <div class="fc-glow"></div>
-      <div class="fc-content">
-        <span class="fc-badge">Precision Check</span>
-        <div class="fc-title">EN ➔ NL</div>
-        <div class="fc-desc">100% Natural Flow</div>
-      </div>
-    </div>
-
-    <div class="floating-card float-right">
-      <div class="fc-glow"></div>
-      <div class="fc-content">
-        <span class="fc-badge">Velocity</span>
-        <div class="fc-title">⚡ 24h</div>
-        <div class="fc-desc">Rapid Turnaround</div>
-      </div>
-    </div>
 
     <div class="hero-content">
       <div class="hero-tag">
@@ -1592,10 +1495,7 @@
     const heroDesc = document.querySelector('.hero-desc');
     const heroButtons = document.querySelector('.hero-buttons');
     const heroTag = document.querySelector('.hero-tag');
-    const cardLeft = document.querySelector('.float-left');
-    const cardRight = document.querySelector('.float-right');
-
-    [heroTag, heroTitle, heroDesc, heroButtons, cardLeft, cardRight].forEach((el, i) => {
+    [heroTag, heroTitle, heroDesc, heroButtons].forEach((el, i) => {
       if (!el) return;
       el.style.opacity = '0';
       el.style.transform = 'translateY(24px)';
@@ -1621,24 +1521,15 @@
         const y = (e.clientY - r.top) / r.height - 0.5;
 
         // Rotate hero content container (3D Tilt)
-        heroContent.style.transform = `rotateX(${-y * 14}deg) rotateY(${x * 14}deg)`;
+        heroContent.style.transform = `rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
 
         // Update video translation
-        currentX = -x * 30;
-        currentY = -y * 30;
+        currentX = -x * 12;
+        currentY = -y * 12;
         if (heroVideo) {
           heroVideo.style.transform = `scale(1.08) translate(${currentX}px, ${currentY}px) translateY(${window.scrollY * 0.28}px)`;
         }
 
-        // Translation offset on floating cards
-        if (cardLeft) {
-          cardLeft.style.animation = 'none';
-          cardLeft.style.transform = `translate3d(${x * 55}px, ${y * 55}px, 60px) rotateX(${-y * 16}deg) rotateY(${x * 16}deg)`;
-        }
-        if (cardRight) {
-          cardRight.style.animation = 'none';
-          cardRight.style.transform = `translate3d(${x * -45}px, ${y * -45}px, 80px) rotateX(${-y * 22}deg) rotateY(${x * 22}deg)`;
-        }
       });
 
       // Smoothly reset transformations when mouse exits hero section
@@ -1653,30 +1544,11 @@
           heroVideo.style.transform = `scale(1) translate(0px, 0px) translateY(${window.scrollY * 0.28}px)`;
         }
 
-        if (cardLeft) {
-          cardLeft.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
-          cardLeft.style.transform = '';
-          setTimeout(() => {
-            cardLeft.style.transition = '';
-            cardLeft.style.animation = 'float-left-loop 5s ease-in-out infinite alternate';
-          }, 800);
-        }
-
-        if (cardRight) {
-          cardRight.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
-          cardRight.style.transform = '';
-          setTimeout(() => {
-            cardRight.style.transition = '';
-            cardRight.style.animation = 'float-right-loop 6s ease-in-out infinite alternate';
-          }, 800);
-        }
       });
 
       heroSection.addEventListener('mouseenter', () => {
         heroContent.style.transition = 'none';
         if (heroVideo) heroVideo.style.transition = 'none';
-        if (cardLeft) cardLeft.style.transition = 'none';
-        if (cardRight) cardRight.style.transition = 'none';
       });
     }
 
