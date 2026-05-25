@@ -1442,13 +1442,10 @@
             </div>
           </div>
         </div>
-        <form class="contact-form" id="contactForm" action="https://formsubmit.co/hello@in2dutch.com" method="POST" enctype="multipart/form-data">
-          <!-- FormSubmit config -->
-          <input type="hidden" name="_subject" value="New enquiry from In2Dutch website" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_next" value="https://in2dutch.com/?sent=1#cta" />
-          <input type="text" name="_honey" style="display:none" />
+        <form class="contact-form" id="contactForm">
+          <input type="hidden" name="access_key" value="43a10579-011b-4655-b4ee-f4f32fe06e8e" />
+          <input type="hidden" name="subject" value="New enquiry from In2Dutch website" />
+          <input type="checkbox" name="botcheck" style="display:none" />
 
           <div class="form-row">
             <div class="form-group">
@@ -1480,13 +1477,6 @@
               <textarea id="cf-message" name="message" placeholder="Tell us about your project..." required></textarea>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group full">
-              <label for="cf-file">Attach a File <span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--muted);font-size:10px">(optional — PDF, Word, etc.)</span></label>
-              <input type="file" id="cf-file" name="attachment" accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.zip" />
-            </div>
-          </div>
-
           <div class="form-submit">
             <button type="submit">
               Send Message
@@ -1770,14 +1760,34 @@
       });
     });
 
-    // ─── CONTACT FORM — show success if redirected back with ?sent=1 ───
+    // ─── CONTACT FORM (Web3Forms) ───
+    const contactForm = document.getElementById('contactForm');
     const formFeedback = document.getElementById('formFeedback');
-    if (formFeedback && new URLSearchParams(window.location.search).get('sent') === '1') {
-      formFeedback.textContent = '✓ Message sent! We\'ll get back to you shortly.';
-      formFeedback.className = 'form-feedback success';
-      formFeedback.style.display = 'block';
-      // Clean the URL without reloading
-      history.replaceState(null, '', window.location.pathname + '#cta');
+    if (contactForm) {
+      contactForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = contactForm.querySelector('button[type="submit"]');
+        btn.textContent = 'Sending…';
+        btn.disabled = true;
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: new FormData(contactForm)
+          });
+          const data = await res.json();
+          if (data.success) {
+            formFeedback.textContent = '✓ Message sent! We\'ll get back to you shortly.';
+            formFeedback.className = 'form-feedback success';
+            contactForm.reset();
+          } else { throw new Error(); }
+        } catch {
+          formFeedback.textContent = 'Something went wrong. Please email us at hello@in2dutch.com';
+          formFeedback.className = 'form-feedback error';
+        }
+        formFeedback.style.display = 'block';
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+      });
     }
   </script>
 </body>
