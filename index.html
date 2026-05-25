@@ -1442,11 +1442,12 @@
             </div>
           </div>
         </div>
-        <form class="contact-form" id="contactForm" enctype="multipart/form-data">
+        <form class="contact-form" id="contactForm" action="https://formsubmit.co/hello@in2dutch.com" method="POST" enctype="multipart/form-data">
           <!-- FormSubmit config -->
           <input type="hidden" name="_subject" value="New enquiry from In2Dutch website" />
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_next" value="https://in2dutch.com/?sent=1#cta" />
           <input type="text" name="_honey" style="display:none" />
 
           <div class="form-row">
@@ -1769,38 +1770,14 @@
       });
     });
 
-    // ─── CONTACT FORM (FormSubmit) ───
-    const contactForm = document.getElementById('contactForm');
+    // ─── CONTACT FORM — show success if redirected back with ?sent=1 ───
     const formFeedback = document.getElementById('formFeedback');
-    if (contactForm) {
-      contactForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const btn = contactForm.querySelector('button[type="submit"]');
-        btn.textContent = 'Sending…';
-        btn.disabled = true;
-
-        try {
-          const res = await fetch('https://formsubmit.co/ajax/hello@in2dutch.com', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json' },
-            body: new FormData(contactForm)
-          });
-          const data = await res.json();
-          if (data.success === 'true' || data.success === true) {
-            formFeedback.textContent = '✓ Message sent! We\'ll get back to you shortly.';
-            formFeedback.className = 'form-feedback success';
-            contactForm.reset();
-          } else {
-            throw new Error();
-          }
-        } catch {
-          formFeedback.textContent = 'Something went wrong. Please email us directly at hello@in2dutch.com';
-          formFeedback.className = 'form-feedback error';
-        }
-        formFeedback.style.display = 'block';
-        btn.textContent = 'Send Message';
-        btn.disabled = false;
-      });
+    if (formFeedback && new URLSearchParams(window.location.search).get('sent') === '1') {
+      formFeedback.textContent = '✓ Message sent! We\'ll get back to you shortly.';
+      formFeedback.className = 'form-feedback success';
+      formFeedback.style.display = 'block';
+      // Clean the URL without reloading
+      history.replaceState(null, '', window.location.pathname + '#cta');
     }
   </script>
 </body>
