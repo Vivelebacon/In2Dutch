@@ -912,17 +912,14 @@
       }
       .nav-logo img { height: 22px; }
 
-      /* ── HERO: disable 3D, fit full viewport ── */
+      /* ── HERO: fit full viewport ── */
       #hero {
-        height: 100svh;
-        min-height: 0;
-        perspective: none;
-        transform-style: flat;
+        height: 100svh !important;
+        min-height: 0 !important;
       }
       .hero-content {
-        transform-style: flat;
         transform: none !important;
-        padding: 56px 20px 16px;
+        padding: 72px 20px 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -932,15 +929,13 @@
         box-sizing: border-box;
       }
       .hero-tag {
-        transform: none;
         font-size: 9px;
         letter-spacing: 0.08em;
         padding: 5px 10px 5px 8px;
         margin-bottom: 12px;
       }
       .hero-h1 {
-        transform: none;
-        font-size: clamp(26px, 8vw, 42px);
+        font-size: clamp(28px, 9vw, 44px);
         line-height: 1;
         margin-bottom: 12px;
       }
@@ -1039,29 +1034,32 @@
       }
     }
 
-    /* ─── 3D HERO & FLOATING CARDS ─── */
-    #hero {
-      perspective: 1200px;
-      transform-style: preserve-3d;
-    }
-    
+    /* ─── 3D HERO & FLOATING CARDS (desktop only) ─── */
     .hero-content {
-      transform-style: preserve-3d;
       transition: transform 0.1s ease-out;
       z-index: 5;
     }
-    
-    .hero-tag {
-      transform: translateZ(30px);
-    }
-    .hero-h1 {
-      transform: translateZ(60px);
-    }
-    .hero-desc {
-      transform: translateZ(40px);
-    }
-    .hero-buttons {
-      transform: translateZ(50px);
+
+    @media (min-width: 769px) {
+      #hero {
+        perspective: 1200px;
+        transform-style: preserve-3d;
+      }
+      .hero-content {
+        transform-style: preserve-3d;
+      }
+      .hero-tag {
+        transform: translateZ(30px);
+      }
+      .hero-h1 {
+        transform: translateZ(60px);
+      }
+      .hero-desc {
+        transform: translateZ(40px);
+      }
+      .hero-buttons {
+        transform: translateZ(50px);
+      }
     }
     
     .floating-card::before {
