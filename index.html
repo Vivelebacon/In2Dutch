@@ -892,6 +892,7 @@
       nav { width: calc(100% - 32px); padding: 12px 24px; }
       .nav-links { display: none; }
       .nav-toggle { display: flex; }
+      .nav-cta { display: none; }
       .sw { padding: 88px 32px; }
       .why-grid { grid-template-columns: 1fr; gap: 56px; }
       .services-grid { grid-template-columns: repeat(4, 1fr); }
@@ -900,58 +901,80 @@
       footer { padding: 40px 32px; }
     }
     @media (max-width: 768px) {
-      /* Nav: slim down, hide CTA, keep logo + hamburger only */
+      /* ── NAV: logo + hamburger only, compact ── */
       nav {
-        width: calc(100% - 24px);
-        top: 10px;
-        padding: 10px 16px;
+        top: 8px;
+        width: calc(100% - 16px);
+        padding: 8px 14px;
+        border-radius: 14px;
         gap: 0;
+        justify-content: space-between;
       }
-      .nav-cta { display: none; }
+      .nav-logo img { height: 22px; }
 
-      /* Hero: fit exactly in the visible viewport */
+      /* ── HERO: disable 3D, fit full viewport ── */
       #hero {
-        height: 100dvh;
-        height: 100svh; /* Safari fallback */
+        height: 100svh;
         min-height: 0;
+        perspective: none;
+        transform-style: flat;
       }
       .hero-content {
-        padding: 72px 20px 32px;
+        transform-style: flat;
+        transform: none !important;
+        padding: 56px 20px 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: calc(100dvh - 72px);
+        height: 100%;
+        min-height: 0;
         box-sizing: border-box;
       }
-      .hero-tag { font-size: 10px; padding: 6px 12px 6px 10px; margin-bottom: 14px; }
-      .hero-h1 { font-size: clamp(28px, 8.5vw, 46px); line-height: 1; margin-bottom: 14px; }
-      .hero-desc { font-size: 14px; line-height: 1.6; margin-bottom: 22px; }
+      .hero-tag {
+        transform: none;
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        padding: 5px 10px 5px 8px;
+        margin-bottom: 12px;
+      }
+      .hero-h1 {
+        transform: none;
+        font-size: clamp(26px, 8vw, 42px);
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+      .hero-desc {
+        font-size: 13px;
+        line-height: 1.55;
+        margin-bottom: 18px;
+        max-width: 100%;
+      }
       .hero-buttons {
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         width: 100%;
-        max-width: 280px;
+        max-width: 260px;
         margin: 0 auto;
       }
       .btn-primary, .btn-ghost {
         width: 100%;
         justify-content: center;
-        padding: 13px 24px;
+        padding: 12px 20px;
         font-size: 13px;
       }
       .scroll-hint { display: none; }
 
-      /* Sections */
-      .sw { padding: 72px 20px; }
+      /* ── SECTIONS ── */
+      .sw { padding: 64px 18px; }
       .services-grid { grid-template-columns: 1fr; }
       .services-grid .scard { grid-column: 1 / -1 !important; }
-      .tc-card { padding: 36px 24px 24px; }
+      .tc-card { padding: 32px 20px 20px; }
       .services-head { flex-direction: column; align-items: flex-start; }
-      .cta-contacts { flex-direction: column; align-items: center; gap: 24px; }
-      footer { padding: 32px 20px; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
-      .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+      .cta-contacts { flex-direction: column; align-items: center; gap: 20px; }
+      footer { padding: 28px 18px; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
     }
 
     /* ─── PRELOADER ─── */
