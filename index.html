@@ -1040,32 +1040,8 @@
       }
     }
 
-    /* ─── 3D HERO & FLOATING CARDS (desktop only) ─── */
     .hero-content {
-      transition: transform 0.1s ease-out;
       z-index: 5;
-    }
-
-    @media (min-width: 769px) {
-      #hero {
-        perspective: 1200px;
-        transform-style: preserve-3d;
-      }
-      .hero-content {
-        transform-style: preserve-3d;
-      }
-      .hero-tag {
-        transform: translateZ(30px);
-      }
-      .hero-h1 {
-        transform: translateZ(60px);
-      }
-      .hero-desc {
-        transform: translateZ(40px);
-      }
-      .hero-buttons {
-        transform: translateZ(50px);
-      }
     }
     
     .floating-card::before {
@@ -1719,60 +1695,6 @@
       }));
     });
 
-    // ─── 3D HERO INTERACTIVE PARALLAX & SCROLL ───
-    const heroSection = document.getElementById('hero');
-    const heroContent = document.querySelector('.hero-content');
-    const heroVideo = document.querySelector('.hero-video-wrap video');
-    
-    let currentX = 0;
-    let currentY = 0;
-
-    if (heroSection && heroContent) {
-      heroSection.addEventListener('mousemove', e => {
-        const r = heroSection.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-
-        // Rotate hero content container (3D Tilt)
-        heroContent.style.transform = `rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
-
-        // Update video translation
-        currentX = -x * 12;
-        currentY = -y * 12;
-        if (heroVideo) {
-          heroVideo.style.transform = `scale(1.08) translate(${currentX}px, ${currentY}px) translateY(${window.scrollY * 0.28}px)`;
-        }
-
-      });
-
-      // Smoothly reset transformations when mouse exits hero section
-      heroSection.addEventListener('mouseleave', () => {
-        heroContent.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
-        heroContent.style.transform = '';
-        
-        currentX = 0;
-        currentY = 0;
-        if (heroVideo) {
-          heroVideo.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
-          heroVideo.style.transform = `scale(1) translate(0px, 0px) translateY(${window.scrollY * 0.28}px)`;
-        }
-
-      });
-
-      heroSection.addEventListener('mouseenter', () => {
-        heroContent.style.transition = 'none';
-        if (heroVideo) heroVideo.style.transition = 'none';
-      });
-    }
-
-    // Scroll parallax for video background (desktop only)
-    if (window.innerWidth > 768) {
-      window.addEventListener('scroll', () => {
-        if (heroVideo && window.scrollY < window.innerHeight) {
-          heroVideo.style.transform = `scale(1.08) translate(${currentX}px, ${currentY}px) translateY(${window.scrollY * 0.28}px)`;
-        }
-      }, { passive: true });
-    }
 
     // ─── CARD 3D TILT ───
     document.querySelectorAll('.scard').forEach(card => {
